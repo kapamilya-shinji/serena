@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Kapamilya Serena Recorder</string>
+    <string name="studio_ready">Listo: Estudio de Grabación sin Pérdida 48kHz con IA Gemma 4 + EmbeddingGemma 2</string>
+</resources>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header Title -->
+        <TextView
+            android:id="@+id/tvWelcomeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_title"
+            android:textColor="@color/serena_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvWelcomeSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/welcome_subtitle"
+            android:textColor="@color/serena_text_dark"
+            android:textSize="14sp" />
+
+        <!-- TTS Voice Guide Control Button -->
+        <Button
+            android:id="@+id/btnPlayWelcomeTts"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/serena_accent"
+            android:text="@string/welcome_btn_play_tts"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/serena_border" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_features_title"
+            android:textColor="@color/serena_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Feature 1 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_feature_1_title"
+            android:textColor="@color/serena_text_dark"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_feature_1_desc"
+            android:textColor="@color/serena_text_dark"
+            android:textSize="13sp" />
+
+        <!-- Feature 2 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_feature_2_title"
+            android:textColor="@color/serena_text_dark"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_feature_2_desc"
+            android:textColor="@color/serena_text_dark"
+            android:textSize="13sp" />
+
+        <!-- Feature 3 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_feature_3_title"
+            android:textColor="@color/serena_text_dark"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_feature_3_desc"
+            android:textColor="@color/serena_text_dark"
+            android:textSize="13sp" />
+
+        <!-- Feature 4 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_feature_4_title"
+            android:textColor="@color/serena_text_dark"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_feature_4_desc"
+            android:textColor="@color/serena_text_dark"
+            android:textSize="13sp" />
+
+        <!-- Feature 5 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_feature_5_title"
+            android:textColor="@color/serena_text_dark"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_feature_5_desc"
+            android:textColor="@color/serena_text_dark"
+            android:textSize="13sp" />
+
+        <!-- Feature 6 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/welcome_feature_6_title"
+            android:textColor="@color/serena_text_dark"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_feature_6_desc"
+            android:textColor="@color/serena_text_dark"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/serena_border" />
+
+        <!-- Don't show again checkbox -->
+        <CheckBox
+            android:id="@+id/cbDontShowAgain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_dont_show_again"
+            android:textColor="@color/serena_text_dark"
+            android:textSize="14sp" />
+
+        <!-- Dismiss Button -->
+        <Button
+            android:id="@+id/btnDismissWelcome"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/serena_primary"
+            android:text="@string/welcome_btn_start"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
+
+    </LinearLayout>
+</ScrollView>

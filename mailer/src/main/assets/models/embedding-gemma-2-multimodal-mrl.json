@@ -1,0 +1,13 @@
+{
+  "model_name": "EmbeddingGemma 2 (Google DeepMind)",
+  "model_id": "embedding-gemma-2-740m-mrl-128d-embedded",
+  "license": "Apache-2.0",
+  "architecture": {
+    "text_backbone_params": "270M",
+    "vision_encoder_params": "170M",
+    "audio_encoder_params": "300M",
+    "total_params": "740M",
+    "full_embedding_dim": 768,
+    "active_matryoshka_dim": 128
+  }
+}

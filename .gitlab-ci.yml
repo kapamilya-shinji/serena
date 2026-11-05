@@ -1,0 +1,51 @@
+stages:
+  - release
+
+build_test_deploy:
+  stage: release
+  variables:
+    GIT_CLEAN_FLAGS: -ffdx -e app/build -e mailer/build -e recorder/build -e phone/build
+  script:
+    - |
+      $ErrorActionPreference = "Stop"
+      Write-Host "Deploying Kapamilya Serena Suite (v5.14.0) on Local Windows Runner..."
+      $env:ANDROID_HOME = "C:\Users\shinj\AppData\Local\Android\Sdk"
+      if (Test-Path "C:\echo\cocoa\local.properties") {
+          Copy-Item "C:\echo\cocoa\local.properties" "local.properties" -Force
+      } else {
+          Set-Content -Path "local.properties" -Value "sdk.dir=C\:\\Users\\shinj\\AppData\\Local\\Android\\Sdk" -Encoding ASCII
+      }
+
+      $cocoaRoot = "C:\echo\cocoa"
+      if (Test-Path "$cocoaRoot\phone\build\outputs\apk\release\phone-release.apk") {
+          Write-Host "Using verified local release builds from $cocoaRoot..."
+          Copy-Item "$cocoaRoot\phone\build\outputs\apk\release\phone-release.apk" "app-kapamilya-serena-phone-release.apk" -Force
+      } else {
+          .\gradlew.bat :phone:assembleRelease --console=plain
+          Copy-Item "phone\build\outputs\apk\release\phone-release.apk" "app-kapamilya-serena-phone-release.apk" -Force
+      }
+
+      $pkgBase = "$env:CI_API_V4_URL/projects/$env:CI_PROJECT_ID/packages/generic/kapamilya-serena/5.14.0"
+      $authHdr = "JOB-TOKEN: $env:CI_JOB_TOKEN"
+      curl.exe --fail -s -S --header $authHdr --upload-file "app-kapamilya-serena-phone-release.apk" "$pkgBase/app-kapamilya-serena-phone-release.apk"
+      if (Test-Path "$cocoaRoot\app\build\outputs\apk\release\app-release.apk") {
+          curl.exe --fail -s -S --header $authHdr --upload-file "$cocoaRoot\app\build\outputs\apk\release\app-release.apk" "$pkgBase/app-kapamilya-serena-release.apk"
+      }
+      if (Test-Path "$cocoaRoot\mailer\build\outputs\apk\release\mailer-release.apk") {
+          curl.exe --fail -s -S --header $authHdr --upload-file "$cocoaRoot\mailer\build\outputs\apk\release\mailer-release.apk" "$pkgBase/app-kapamilya-serena-mail-release.apk"
+      }
+      if (Test-Path "$cocoaRoot\recorder\build\outputs\apk\release\recorder-release.apk") {
+          curl.exe --fail -s -S --header $authHdr --upload-file "$cocoaRoot\recorder\build\outputs\apk\release\recorder-release.apk" "$pkgBase/app-kapamilya-serena-recorder-release.apk"
+      }
+      if (Test-Path "$cocoaRoot\mailer-windows\Kapamilya-Serena-Mail-Windows-Setup.exe") {
+          curl.exe --fail -s -S --header $authHdr --upload-file "$cocoaRoot\mailer-windows\Kapamilya-Serena-Mail-Windows-Setup.exe" "$pkgBase/Kapamilya-Serena-Mail-Windows-Setup.exe"
+      }
+      if (Test-Path "$cocoaRoot\phone-windows\Kapamilya-Serena-Phone-Windows-Setup.exe") {
+          curl.exe --fail -s -S --header $authHdr --upload-file "$cocoaRoot\phone-windows\Kapamilya-Serena-Phone-Windows-Setup.exe" "$pkgBase/Kapamilya-Serena-Phone-Windows-Setup.exe"
+      }
+      if (Test-Path "$cocoaRoot\recorder-windows\Kapamilya-Serena-Recorder-Windows-Setup.exe") {
+          curl.exe --fail -s -S --header $authHdr --upload-file "$cocoaRoot\recorder-windows\Kapamilya-Serena-Recorder-Windows-Setup.exe" "$pkgBase/Kapamilya-Serena-Recorder-Windows-Setup.exe"
+      }
+      Write-Host "`nKapamilya Serena Suite v5.14.0 CI/CD Deployment Complete!"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

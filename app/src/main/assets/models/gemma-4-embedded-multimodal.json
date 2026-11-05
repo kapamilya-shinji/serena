@@ -1,0 +1,97 @@
+{
+  "model_id": "gemma-4-e2b-it-embedded-multimodal-v3",
+  "engine": "Gemma 4 (Developed by Google DeepMind) — Kapamilya Serena Embedded Multimodal UI Core",
+  "architecture": "LiteRT 2.3.0 GPU + AICore GenAI + Embedded Spatial-Semantic Transformer Matrix",
+  "always_embedded": true,
+  "multimodal_domains": {
+    "banking_finance": {
+      "package_keywords": ["bank", "pay", "wallet", "gcash", "maya", "bdo", "bpi", "metrobank", "unionbank", "landbank", "rakuten", "paypay", "dbarai", "aupay", "merpay", "linepay", "smbc", "mufg", "mizuho", "yucho", "revolut", "wise", "paypal", "venmo", "cashapp", "binance", "coinbase"],
+      "spatial_rules": {
+        "bottom_center": {
+          "ja": "Gemma 4 推論: QRコード決済・送金実行ボタン",
+          "en": "Gemma 4 Deduction: QR Payment / Send Money Action Button",
+          "tl": "Gemma 4: Pindutan ng QR Bayad o Padala ng Pera",
+          "es": "Gemma 4: Botón de pago QR o transferencia"
+        },
+        "bottom_left": {
+          "ja": "Gemma 4 推論: 口座ホーム・残高照会タブ",
+          "en": "Gemma 4 Deduction: Account Home & Balance Tab",
+          "tl": "Gemma 4: Tab ng Home at Balanse sa Bangko",
+          "es": "Gemma 4: Pestaña de inicio y saldo bancario"
+        },
+        "bottom_right": {
+          "ja": "Gemma 4 推論: 取引履歴・アカウント設定タブ",
+          "en": "Gemma 4 Deduction: Transaction History & Account Tab",
+          "tl": "Gemma 4: Tab ng Kasaysayan at Account",
+          "es": "Gemma 4: Pestaña de historial y cuenta"
+        },
+        "center": {
+          "ja": "Gemma 4 推論: ワンタイムパスワード・暗証番号・金額操作エリア",
+          "en": "Gemma 4 Deduction: OTP / PIN / Amount Input Area",
+          "tl": "Gemma 4: Lugar ng OTP, PIN, o Halaga",
+          "es": "Gemma 4: Área de código OTP, PIN o importe"
+        }
+      }
+    },
+    "messaging_social": {
+      "package_keywords": ["messenger", "whatsapp", "viber", "line", "telegram", "signal", "wechat", "instagram", "facebook", "twitter", "x.android", "threads", "tiktok", "discord", "slack"],
+      "spatial_rules": {
+        "bottom_right": {
+          "ja": "Gemma 4 推論: メッセージ送信・音声録音ボタン",
+          "en": "Gemma 4 Deduction: Send Message / Voice Note Button",
+          "tl": "Gemma 4: Pindutan ng Ipadala ang Mensahe o Boses",
+          "es": "Gemma 4: Botón de enviar mensaje o nota de voz"
+        },
+        "bottom_left": {
+          "ja": "Gemma 4 推論: 画像・ファイル・スタンプ添付ボタン",
+          "en": "Gemma 4 Deduction: Attach Photo / File / Sticker Button",
+          "tl": "Gemma 4: Pindutan ng Maglakip ng Larawan o File",
+          "es": "Gemma 4: Botón de adjuntar foto o archivo"
+        },
+        "top_right": {
+          "ja": "Gemma 4 推論: 音声通話・ビデオ通話・チャット設定ボタン",
+          "en": "Gemma 4 Deduction: Voice / Video Call or Chat Options",
+          "tl": "Gemma 4: Pindutan ng Tawag o Opsyon sa Chat",
+          "es": "Gemma 4: Botón de llamada o ajustes del chat"
+        }
+      }
+    },
+    "shopping_delivery": {
+      "package_keywords": ["amazon", "shopee", "lazada", "rakuten", "mercari", "yahoo", "grab", "foodpanda", "uber", "demaecan", "ebay", "temu", "shein", "zalora"],
+      "spatial_rules": {
+        "bottom_right": {
+          "ja": "Gemma 4 推論: カートに入れる・今すぐ購入ボタン",
+          "en": "Gemma 4 Deduction: Add to Cart / Buy Now Button",
+          "tl": "Gemma 4: Idagdag sa Cart o Bilhin Ngayon",
+          "es": "Gemma 4: Añadir al carrito o comprar ahora"
+        },
+        "top_right": {
+          "ja": "Gemma 4 推論: ショッピングカート・検索ボタン",
+          "en": "Gemma 4 Deduction: Shopping Cart / Search Button",
+          "tl": "Gemma 4: Pindutan ng Cart o Paghahanap",
+          "es": "Gemma 4: Botón de carrito o búsqueda"
+        }
+      }
+    }
+  },
+  "semantic_id_weights": {
+    "confirm|submit|verify|auth|otp|approve|proceed|pay|transfer": {
+      "ja": "Gemma 4 推論: 確定・認証・送金実行ボタン",
+      "en": "Gemma 4 Deduction: Confirm / Authenticate / Execute Button",
+      "tl": "Gemma 4: Pindutan ng Kumpirmahin o I-authenticate",
+      "es": "Gemma 4: Botón de confirmar o autenticar"
+    },
+    "scan|qr|barcode|reader|lens": {
+      "ja": "Gemma 4 推論: QR・バーコード読み取りボタン",
+      "en": "Gemma 4 Deduction: QR / Barcode Scanner Button",
+      "tl": "Gemma 4: Pindutan ng QR o Barcode Scanner",
+      "es": "Gemma 4: Botón de escáner QR o código de barras"
+    },
+    "biometric|fingerprint|face_id|passkey": {
+      "ja": "Gemma 4 推論: 生体認証（指紋・顔・パスキー）ボタン",
+      "en": "Gemma 4 Deduction: Biometric (Fingerprint / Face / Passkey) Auth",
+      "tl": "Gemma 4: Biometric Fingerprints o Face Auth",
+      "es": "Gemma 4: Autenticación biométrica (huella o rostro)"
+    }
+  }
+}

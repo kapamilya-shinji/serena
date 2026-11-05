@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mail_app_name">Kapamilya Serena Mail</string>
+    <string name="mail_list_title">🌸 Kapamilya Serena Mail Inbox</string>
+    <string name="mail_detail_title">Detalye ng Mensahe</string>
+    <string name="mail_compose_title">Sumulat ng Email</string>
+    <string name="mail_settings_title">Mga Setting ng Account</string>
+
+    <string name="mail_btn_refresh">I-refresh ang inbox</string>
+    <string name="mail_btn_compose">Bagong email</string>
+    <string name="mail_btn_settings">Mga setting</string>
+    <string name="mail_btn_summarize">I-summarize gamit ang Gemma 4</string>
+    <string name="mail_btn_ai_reply">Gumawa ng sagot gamit ang AI</string>
+    <string name="mail_btn_reply">Sumagot</string>
+    <string name="mail_btn_send">Ipadala ang email</string>
+    <string name="mail_btn_save_account">I-save at subukan ang koneksyon</string>
+
+    <string name="mail_label_from">Mula kay: %1$s</string>
+    <string name="mail_label_to">Para kay: %1$s</string>
+    <string name="mail_label_date">Petsa: %1$s</string>
+    <string name="mail_label_subject">Paksa: %1$s</string>
+    <string name="mail_label_body">Nilalaman: %1$s</string>
+
+    <string name="mail_hint_to">Email address ng tatanggap</string>
+    <string name="mail_hint_subject">Paksa</string>
+    <string name="mail_hint_body">Isulat ang iyong mensahe dito</string>
+    <string name="mail_hint_email">Gmail address (hal. user@gmail.com)</string>
+    <string name="mail_hint_app_password">16-character na Google App Password</string>
+
+    <string name="mail_status_connecting">Kumokonekta sa mail server…</string>
+    <string name="mail_status_connected">Matagumpay na nakakonekta!</string>
+    <string name="mail_status_fetching">Kinukuha ang mga email…</string>
+    <string name="mail_status_fetched_fmt">Nakuha ang %1$d na mga email.</string>
+    <string name="mail_status_sending">Ipinapadala ang email…</string>
+    <string name="mail_status_sent">Matagumpay na naipadala ang email!</string>
+    <string name="mail_status_send_failed_fmt">Nabigong ipadala: %1$s</string>
+    <string name="mail_status_error_fmt">Error: %1$s</string>
+    <string name="mail_status_no_account">Walang naka-set up na account. Buksan ang mga setting upang mai-setup ang iyong Gmail.</string>
+    <string name="mail_status_summarizing">Sinasuri at binubuod ng Gemma 4 ang email…</string>
+    <string name="mail_status_generating_reply">Gumagawa ang Gemma 4 ng sagot gamit ang AI…</string>
+    <string name="mail_summary_result_fmt">Buod ng Gemma 4: %1$s</string>
+
+    <string name="mail_unread_indicator">Hindi pa nababasa</string>
+    <string name="mail_read_indicator">Nabasa na</string>
+    <string name="mail_item_a11y_fmt">%1$s. Mula kay %2$s. Paksa: %3$s. Petsa: %4$s.</string>
+    <string name="mail_settings_desc">Upang magamit ang Gmail, i-on ang 2-step verification sa iyong Google Account at gumawa ng 16-character App Password.</string>
+
+    <!-- Auto Update Strings -->
+    <string name="mail_settings_check_update">Suriin ang mga update ng Kapamilya Serena Mail</string>
+    <string name="update_dialog_title">🚀 May Bagong Update ang Kapamilya Serena Mail: %1$s</string>
+    <string name="update_dialog_message">May bagong bersyon ang Kapamilya Serena Mail!\n\nKasalukuyang Bersyon: %1$s\nPinakabagong Bersyon: %2$s\n\nMga Tala sa Release:\n%3$s\n\nGusto mo bang i-update ngayon?</string>
+    <string name="update_btn_install_now">I-install ang Update</string>
+    <string name="update_btn_open_github">Tingnan sa GitHub</string>
+    <string name="update_btn_later">Mamaya</string>
+    <string name="update_download_started">Dina-download ang bagong APK ng Kapamilya Serena Mail…</string>
+    <string name="update_download_finished">Tapos na ang pag-download. Binubuksan ang installer…</string>
+    <string name="update_download_failed">Nabigo ang pag-download ng update: %1$s</string>
+    <string name="update_permission_required">Mangyaring payagan ang \'Mag-install ng hindi kilalang app\' para sa Kapamilya Serena Mail upang magpatuloy sa pag-update.</string>
+    <string name="update_launching_installer">Binubuksan ang package installer…</string>
+    <string name="update_install_failed">Nabigong buksan ang installer: %1$s</string>
+    <string name="update_already_latest">Nasa pinakabagong bersyon na ang Kapamilya Serena Mail (%1$s).</string>
+    <string name="update_checking">Sinusuri ang mga update…</string>
+
+    <!-- Google OAuth & Simple Setup Strings -->
+    <string name="mail_btn_google_auth">Mag-sign in gamit ang Google Account (1-Tap)</string>
+    <string name="mail_btn_google_sign_in">Mag-sign in gamit ang Google</string>
+    <string name="mail_status_logged_in_as">Naka-sign in bilang: %1$s</string>
+    <string name="mail_btn_logout">Mag-sign out / Lumipat ng account</string>
+    <string name="mail_btn_toggle_manual">Ipakita ang manual setup (App Password)</string>
+    <string name="mail_logged_out">Matagumpay na nag-sign out</string>
+    <string name="mail_login_prompt">Mag-sign in gamit ang iyong Google account para simulang gamitin ang email nang walang App Password.</string>
+    <string name="mail_label_or_manual">— O mag-set up gamit ang 16-character na App Password —</string>
+    <string name="mail_btn_open_app_password_page">Buksan ang pahina ng Google App Password</string>
+    <string name="mail_oauth_connecting">Nagpapatunay gamit ang Google Account…</string>
+    <string name="mail_oauth_fallback_hint">Nabigo ang pagpapatunay sa Google. Mangyaring maglagay ng App Password sa manual setup.</string>
+    <string name="mail_search_hint">Matalinong paghahanap gamit ang EmbeddingGemma 2</string>
+    <string name="mail_btn_clear_search">I-clear</string>
+    <string name="mail_search_result_fmt">%1$d mga email ang nahanap</string>
+
+    <!-- Attachments & Media Strings -->
+    <string name="mail_btn_attach_file">📎 Maglakip ng File o Audio</string>
+    <string name="mail_btn_attach_audio">🎵 Maglakip ng Audio (FLAC/WAV/MP3)</string>
+    <string name="mail_attachment_count_fmt">Mga Naka-attach (%1$d)</string>
+    <string name="mail_attachment_item_a11y_fmt">Attachment: %1$s, laki: %2$s. I-double tap upang alisin.</string>
+    <string name="mail_attachment_removed_fmt">Inalis ang %1$s</string>
+    <string name="mail_attachment_added_fmt">Nailakip ang %1$s</string>
+    <string name="mail_attachment_size_too_large">Masyadong malaki ang file (maximum 25MB): %1$s</string>
+    <string name="mail_attachment_read_error">Nabigong basahin ang attachment: %1$s</string>
+    <string name="mail_attachment_btn_remove">Alisin</string>
+    <string name="mail_attachment_unit_kb">%1$.1f KB</string>
+    <string name="mail_attachment_unit_mb">%1$.1f MB</string>
+    <!-- Official Portal & Artist Links (Shinji Sakiyama) -->
+    <string name="mail_artist_links_section_title">🎵 Opisyal na Portal at Musika (Shinji Sakiyama)</string>
+    <string name="mail_artist_links_section_desc">Opisyal na portal at mga a cappella music channel ng developer at indie artist na si Shinji Sakiyama.</string>
+    <string name="mail_btn_artist_portal">🌐 Opisyal na Portal (kapamilya.gitlab.io)</string>
+    <string name="mail_btn_artist_youtube">▶️ Opisyal na YouTube Channel (@mate_sachi)</string>
+    <string name="mail_btn_artist_youtube_music">🎧 Pakinggan sa YouTube Music</string>
+    <string name="mail_btn_artist_spotify">🟢 Pakinggan sa Spotify</string>
+    <string name="mail_btn_artist_amazon_music">📦 Pakinggan sa Amazon Music</string>
+    <string name="mail_btn_artist_apple_music">🍎 Pakinggan sa Apple Music</string>
+    <!-- Open-Standard IMAP Folder & Mail Actions (RFC 6154 SPECIAL-USE) -->
+    <string name="mail_folder_inbox">📥 Inbox</string>
+    <string name="mail_folder_starred">⭐ May Bituin</string>
+    <string name="mail_folder_sent">📤 Naipadala</string>
+    <string name="mail_folder_drafts">📝 Mga Draft</string>
+    <string name="mail_folder_all">📚 Lahat ng Mail</string>
+    <string name="mail_folder_spam">🚫 Spam</string>
+    <string name="mail_folder_trash">🗑️ Basurahan</string>
+    <string name="mail_btn_star_on">⭐ Lagyan ng Bituin</string>
+    <string name="mail_btn_star_off">★ Alisin ang Bituin</string>
+    <string name="mail_btn_archive">📦 I-archive</string>
+    <string name="mail_btn_delete">🗑️ Ilipat sa Basurahan</string>
+    <string name="mail_btn_mark_unread">✉️ Markahan bilang Hindi Pa Nababasa</string>
+    <string name="mail_btn_save_draft">📝 I-save bilang Draft</string>
+    <string name="mail_status_archived">Na-archive na ang mensahe</string>
+    <string name="mail_status_moved_trash">Inilipat sa Basurahan</string>
+    <string name="mail_status_marked_unread">Minarkahan bilang hindi pa nababasa</string>
+    <string name="mail_status_star_updated">Na-update ang bituin</string>
+    <string name="mail_status_saving_draft">Sine-save ang draft...</string>
+    <string name="mail_status_draft_saved">Na-save sa Mga Draft</string>
+</resources>

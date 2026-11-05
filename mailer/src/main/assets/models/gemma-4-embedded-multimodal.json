@@ -1,0 +1,6 @@
+{
+  "model_id": "gemma-4-e2b-it-embedded-multimodal-v3",
+  "engine": "Gemma 4 (Developed by Google DeepMind) — Kapamilya Serena Mail Embedded Core",
+  "architecture": "LiteRT 2.3.0 GPU + AICore GenAI + Embedded Email & UI Transformer Matrix",
+  "always_embedded": true
+}

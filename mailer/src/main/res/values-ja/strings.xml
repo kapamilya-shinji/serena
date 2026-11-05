@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mail_app_name">Kapamilya Serena Mail</string>
+    <string name="mail_list_title">🌸 Kapamilya Serena Mail 受信トレイ</string>
+    <string name="mail_detail_title">メール詳細</string>
+    <string name="mail_compose_title">メール作成</string>
+    <string name="mail_settings_title">アカウント設定</string>
+
+    <string name="mail_btn_refresh">受信トレイを更新</string>
+    <string name="mail_btn_compose">新規メール作成</string>
+    <string name="mail_btn_settings">アカウント設定</string>
+    <string name="mail_btn_summarize">Gemma 4 でメールを要約</string>
+    <string name="mail_btn_ai_reply">AIで返信文を作成</string>
+    <string name="mail_btn_reply">返信</string>
+    <string name="mail_btn_send">メールを送信</string>
+    <string name="mail_btn_save_account">保存して接続テスト</string>
+
+    <string name="mail_label_from">送信者: %1$s</string>
+    <string name="mail_label_to">宛先: %1$s</string>
+    <string name="mail_label_date">日時: %1$s</string>
+    <string name="mail_label_subject">件名: %1$s</string>
+    <string name="mail_label_body">本文: %1$s</string>
+
+    <string name="mail_hint_to">宛先メールアドレスを入力</string>
+    <string name="mail_hint_subject">件名を入力</string>
+    <string name="mail_hint_body">メール本文を入力</string>
+    <string name="mail_hint_email">Gmailアドレス (例: user@gmail.com)</string>
+    <string name="mail_hint_app_password">Googleアプリパスワード (16桁)</string>
+
+    <string name="mail_status_connecting">メールサーバーに接続中…</string>
+    <string name="mail_status_connected">接続に成功しました！</string>
+    <string name="mail_status_fetching">メールを受信中…</string>
+    <string name="mail_status_fetched_fmt">%1$d件のメールを受信しました。</string>
+    <string name="mail_status_sending">メールを送信中…</string>
+    <string name="mail_status_sent">メールを送信しました！</string>
+    <string name="mail_status_send_failed_fmt">送信に失敗しました: %1$s</string>
+    <string name="mail_status_error_fmt">エラー: %1$s</string>
+    <string name="mail_status_no_account">アカウントが設定されていません。設定画面からGmailを設定してください。</string>
+    <string name="mail_status_summarizing">Gemma 4 がメール本文を解析・要約中…</string>
+    <string name="mail_status_generating_reply">Gemma 4 がAI返信文を作成中…</string>
+    <string name="mail_summary_result_fmt">【Gemma 4 要約】%1$s</string>
+
+    <string name="mail_unread_indicator">未読</string>
+    <string name="mail_read_indicator">既読</string>
+    <string name="mail_item_a11y_fmt">%1$s、送信者 %2$s、件名 %3$s、日時 %4$s</string>
+    <string name="mail_settings_desc">Gmailを利用するには、Googleアカウントで「2段階認証」を有効にし、「アプリパスワード（16桁）」を発行して設定してください。</string>
+
+    <!-- Auto Update Strings -->
+    <string name="mail_settings_check_update">Kapamilya Serena Mail のアップデートを確認</string>
+    <string name="update_dialog_title">🚀 Kapamilya Serena Mail のアップデートが利用可能です: %1$s</string>
+    <string name="update_dialog_message">Kapamilya Serena Mail の最新バージョンが公開されています！\n\n現在のバージョン: %1$s\n最新のバージョン: %2$s\n\n更新内容:\n%3$s\n\n今すぐアップデートしますか？</string>
+    <string name="update_btn_install_now">今すぐアップデート</string>
+    <string name="update_btn_open_github">GitHubで確認</string>
+    <string name="update_btn_later">後で</string>
+    <string name="update_download_started">Kapamilya Serena Mail 最新版のダウンロードを開始しました…</string>
+    <string name="update_download_finished">ダウンロードが完了しました。インストーラーを開きます…</string>
+    <string name="update_download_failed">アップデートのダウンロードに失敗しました: %1$s</string>
+    <string name="update_permission_required">Kapamilya Serena Mail からのアプリ更新を許可してください。設定画面を開きます。</string>
+    <string name="update_launching_installer">パッケージインストーラーを起動します…</string>
+    <string name="update_install_failed">インストーラーの起動に失敗しました: %1$s</string>
+    <string name="update_already_latest">Kapamilya Serena Mail は最新バージョン (%1$s) です。</string>
+    <string name="update_checking">アップデートを確認中…</string>
+
+    <!-- Google OAuth & Simple Setup Strings -->
+    <string name="mail_btn_google_auth">Googleアカウントでワンタップ連携</string>
+    <string name="mail_btn_google_sign_in">Googleでログイン</string>
+    <string name="mail_status_logged_in_as">ログイン中: %1$s</string>
+    <string name="mail_btn_logout">ログアウト / アカウント変更</string>
+    <string name="mail_btn_toggle_manual">手動設定（アプリパスワード）を表示</string>
+    <string name="mail_logged_out">ログアウトしました</string>
+    <string name="mail_login_prompt">Googleアカウントでログインすると、アプリパスワード不要ですぐにメールが使えます。</string>
+    <string name="mail_label_or_manual">— または16桁のアプリパスワードで設定 —</string>
+    <string name="mail_btn_open_app_password_page">Googleアプリパスワード発行ページを開く</string>
+    <string name="mail_oauth_connecting">Googleアカウントで認証中…</string>
+    <string name="mail_oauth_fallback_hint">Googleアカウントの認証に失敗しました。詳細設定からアプリパスワードを入力してください。</string>
+    <string name="mail_search_hint">EmbeddingGemma 2 でスマート検索（例：支払い、セレナ）</string>
+    <string name="mail_btn_clear_search">クリア</string>
+    <string name="mail_search_result_fmt">%1$d件のメールが見つかりました</string>
+
+    <!-- Attachments & Media Strings -->
+    <string name="mail_btn_attach_file">📎 ファイル・音声を添付</string>
+    <string name="mail_btn_attach_audio">🎵 音声ファイル（FLAC/WAV/MP3等）を添付</string>
+    <string name="mail_attachment_count_fmt">添付ファイル（%1$d件）</string>
+    <string name="mail_attachment_item_a11y_fmt">添付ファイル: %1$s, サイズ: %2$s。削除するにはダブルタップしてください。</string>
+    <string name="mail_attachment_removed_fmt">%1$s を削除しました</string>
+    <string name="mail_attachment_added_fmt">%1$s を添付しました</string>
+    <string name="mail_attachment_size_too_large">ファイルサイズが大きすぎます（最大25MB）: %1$s</string>
+    <string name="mail_attachment_read_error">添付ファイルの読み込みに失敗しました: %1$s</string>
+    <string name="mail_attachment_btn_remove">削除</string>
+    <string name="mail_attachment_unit_kb">%1$.1f KB</string>
+    <string name="mail_attachment_unit_mb">%1$.1f MB</string>
+    <!-- Official Portal & Artist Links (Shinji Sakiyama) -->
+    <string name="mail_artist_links_section_title">🎵 開発者・アーティスト公式リンク (Shinji Sakiyama)</string>
+    <string name="mail_artist_links_section_desc">開発者・崎山真治（Shinji Sakiyama）の公式ポータルサイトおよび多重録音アカペラ音楽配信チャンネルです。</string>
+    <string name="mail_btn_artist_portal">🌐 公式ポータルサイト (kapamilya.gitlab.io)</string>
+    <string name="mail_btn_artist_youtube">▶️ YouTube 公式チャンネル (@mate_sachi)</string>
+    <string name="mail_btn_artist_youtube_music">🎧 YouTube Music で聴く</string>
+    <string name="mail_btn_artist_spotify">🟢 Spotify アーティストページ</string>
+    <string name="mail_btn_artist_amazon_music">📦 Amazon Music で聴く</string>
+    <string name="mail_btn_artist_apple_music">🍎 Apple Music で聴く</string>
+    <!-- Open-Standard IMAP Folder & Mail Actions (RFC 6154 SPECIAL-USE) -->
+    <string name="mail_folder_inbox">📥 受信トレイ</string>
+    <string name="mail_folder_starred">⭐ スター付き</string>
+    <string name="mail_folder_sent">📤 送信済み</string>
+    <string name="mail_folder_drafts">📝 下書き</string>
+    <string name="mail_folder_all">📚 すべてのメール</string>
+    <string name="mail_folder_spam">🚫 迷惑メール</string>
+    <string name="mail_folder_trash">🗑️ ゴミ箱</string>
+    <string name="mail_btn_star_on">⭐ スターを付ける</string>
+    <string name="mail_btn_star_off">★ スターを外す</string>
+    <string name="mail_btn_archive">📦 アーカイブ</string>
+    <string name="mail_btn_delete">🗑️ ゴミ箱へ移動</string>
+    <string name="mail_btn_mark_unread">✉️ 未読に戻す</string>
+    <string name="mail_btn_save_draft">📝 下書きとして保存</string>
+    <string name="mail_status_archived">アーカイブしました</string>
+    <string name="mail_status_moved_trash">ゴミ箱へ移動しました</string>
+    <string name="mail_status_marked_unread">未読に戻しました</string>
+    <string name="mail_status_star_updated">スター状態を更新しました</string>
+    <string name="mail_status_saving_draft">下書きを保存しています...</string>
+    <string name="mail_status_draft_saved">下書きトレイに保存しました</string>
+</resources>

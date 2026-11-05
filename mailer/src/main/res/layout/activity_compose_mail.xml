@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 宛先入力 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mail_hint_to"
+            android:textColor="#AAAAAA"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etTo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="@string/mail_hint_to"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#666666"
+            android:background="#1E1E1E"
+            android:padding="12dp"
+            android:inputType="textEmailAddress"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 件名入力 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mail_hint_subject"
+            android:textColor="#AAAAAA"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="@string/mail_hint_subject"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#666666"
+            android:background="#1E1E1E"
+            android:padding="12dp"
+            android:inputType="text"
+            android:layout_marginBottom="12dp" />
+
+        <!-- AI作成アシストボタン -->
+        <Button
+            android:id="@+id/btnAiAssist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="🪄 Gemma 4 で返信・下書きを作成"
+            android:contentDescription="Gemma 4 で返信または下書きを作成"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 本文入力 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mail_hint_body"
+            android:textColor="#AAAAAA"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <EditText
+            android:id="@+id/etBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="140dp"
+            android:gravity="top"
+            android:hint="@string/mail_hint_body"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#666666"
+            android:background="#1E1E1E"
+            android:padding="12dp"
+            android:inputType="textMultiLine"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 添付ファイル操作セクション -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <Button
+                android:id="@+id/btnAttachAudio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="48dp"
+                android:text="@string/mail_btn_attach_audio"
+                android:layout_marginEnd="4dp" />
+
+            <Button
+                android:id="@+id/btnAttachFile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:minHeight="48dp"
+                android:text="@string/mail_btn_attach_file"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- 添付ファイル一覧 -->
+        <TextView
+            android:id="@+id/tvAttachmentHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#00E5FF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_marginBottom="6dp" />
+
+        <LinearLayout
+            android:id="@+id/layoutAttachments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp" />
+
+        <!-- OpenPGP (GPG) 署名 ＆ 開封確認通知 (MDN) セクション -->
+        <CheckBox
+            android:id="@+id/cbSignOpenPgp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="🔐 OpenPGP (GPG) 電子署名を付与して送信する"
+            android:contentDescription="OpenPGP GPG 電子署名を付与して送信する"
+            android:textColor="#80D8FF"
+            android:textSize="15sp"
+            android:checked="true"
+            android:layout_marginBottom="4dp" />
+
+        <CheckBox
+            android:id="@+id/cbRequestReadReceipt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="📩 開封確認通知（Read Receipt / MDN）を相手に要求する"
+            android:contentDescription="開封確認通知を相手に要求する"
+            android:textColor="#FFD54F"
+            android:textSize="15sp"
+            android:checked="false"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnShowOpenPgpKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="🔑 OpenPGP (GPG) 公開鍵の確認・コピー・鍵再生成"
+            android:contentDescription="OpenPGP GPG 公開鍵の確認・クリップボードへのコピー・鍵ペア再生成"
+            android:backgroundTint="#263238"
+            android:textColor="#80D8FF"
+            android:layout_marginBottom="12dp" />
+
+        <!-- 下書き保存ボタン -->
+        <Button
+            android:id="@+id/btnSaveDraft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/mail_btn_save_draft"
+            android:contentDescription="@string/mail_btn_save_draft"
+            android:backgroundTint="#37474F"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 送信ボタン -->
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/mail_btn_send"
+            android:contentDescription="@string/mail_btn_send" />
+
+    </LinearLayout>
+</ScrollView>

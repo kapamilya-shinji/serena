@@ -1,0 +1,31 @@
+Kapamilya Serena & Kapamilya Serena Mail
+Copyright (C) 2026 Shinji Sakiyama (shinjisakiyama@gmail.com)
+Bayanihan • Magna Carta • Kapamilya
+Licensed under the Apache License, Version 2.0.
+
+================================================================================
+Third-Party Open-Source Software & Attribution Notices (Apache License 2.0)
+================================================================================
+
+1. Google TalkBack (TalkBack 17 / Android Accessibility Suite)
+   Source Repository: https://github.com/google/talkback
+   Copyright (C) 2017-2026 The Android Open Source Project / Google LLC
+   License: Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+
+   Portions of Kapamilya Serena's system window, permission dialog, special popup,
+   Power Button Menu (GlobalActions), Quick Settings panel, Notification Shade, and
+   Credential Manager / Biometric prompt focus & traversal breakthrough engine
+   (`TalkBack17SystemWindowBridge.kt`, `SystemDialogHelper.kt`, `SerenaFocusNavigator.kt`)
+   incorporate architectural mechanisms and algorithms derived from Google TalkBack 17,
+   including:
+   - com.google.android.accessibility.utils.WindowEventInterpreter
+   - com.google.android.accessibility.utils.Role
+   - com.google.android.accessibility.talkback.focusmanagement.FocusProcessorForScreenStateChange
+   - com.google.android.accessibility.utils.traversal.TraversalStrategyUtils
+
+================================================================================
+Trademark & Copyright Compliance Notice
+================================================================================
+- Android, Google, Google TalkBack, Gemini, and Gemma are trademarks of Google LLC.
+- Kapamilya Serena is an independent open-source accessibility project created by
+  Shinji Sakiyama and is not affiliated with or endorsed by Google LLC.

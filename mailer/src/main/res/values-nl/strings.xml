@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mail_app_name">Kapamilya Serena Mail</string>
+    <string name="mail_list_title">🌸 Kapamilya Serena Mail Postvak IN</string>
+    <string name="mail_detail_title">Berichtdetails</string>
+    <string name="mail_compose_title">E-mail opstellen</string>
+    <string name="mail_settings_title">Accountinstellingen</string>
+
+    <string name="mail_btn_refresh">Postvak IN vernieuwen</string>
+    <string name="mail_btn_compose">Nieuwe e-mail opstellen</string>
+    <string name="mail_btn_settings">Accountinstellingen</string>
+    <string name="mail_btn_summarize">Samenvatten met Gemma 4</string>
+    <string name="mail_btn_ai_reply">AI-antwoord genereren</string>
+    <string name="mail_btn_reply">Beantwoorden</string>
+    <string name="mail_btn_send">E-mail verzenden</string>
+    <string name="mail_btn_save_account">Opslaan en verbinding testen</string>
+
+    <string name="mail_label_from">Van: %1$s</string>
+    <string name="mail_label_to">Aan: %1$s</string>
+    <string name="mail_label_date">Datum: %1$s</string>
+    <string name="mail_label_subject">Onderwerp: %1$s</string>
+    <string name="mail_label_body">Inhoud: %1$s</string>
+
+    <string name="mail_hint_to">E-mailadres van ontvanger</string>
+    <string name="mail_hint_subject">Onderwerp</string>
+    <string name="mail_hint_body">Schrijf hier uw bericht</string>
+    <string name="mail_hint_email">Gmail-adres (bijv. gebruiker@gmail.com)</string>
+    <string name="mail_hint_app_password">16-tekens Google-app-wachtwoord</string>
+
+    <string name="mail_status_connecting">Verbinden met mailserver…</string>
+    <string name="mail_status_connected">Succesvol verbonden!</string>
+    <string name="mail_status_fetching">E-mails ophalen…</string>
+    <string name="mail_status_fetched_fmt">%1$d e-mails opgehaald.</string>
+    <string name="mail_status_sending">E-mail verzenden…</string>
+    <string name="mail_status_sent">E-mail succesvol verzonden!</string>
+    <string name="mail_status_send_failed_fmt">Verzenden mislukt: %1$s</string>
+    <string name="mail_status_error_fmt">Fout: %1$s</string>
+    <string name="mail_status_no_account">Geen account ingesteld. Open instellingen om uw Gmail in te stellen.</string>
+    <string name="mail_status_summarizing">Gemma 4 vat de e-mail samen…</string>
+    <string name="mail_status_generating_reply">Gemma 4 stelt een AI-antwoord op…</string>
+    <string name="mail_summary_result_fmt">Gemma 4 Samenvatting: %1$s</string>
+
+    <string name="mail_unread_indicator">Ongelezen</string>
+    <string name="mail_read_indicator">Gelezen</string>
+    <string name="mail_item_a11y_fmt">%1$s. Van %2$s. Onderwerp: %3$s. Datum: %4$s.</string>
+    <string name="mail_settings_desc">Om Gmail te gebruiken, schakelt u tweestapsverificatie in op uw Google-account en genereert u een app-wachtwoord van 16 tekens.</string>
+
+    <!-- Auto Update Strings -->
+    <string name="mail_settings_check_update">Controleer op updates voor Kapamilya Serena Mail</string>
+    <string name="update_dialog_title">🚀 Kapamilya Serena Mail-update beschikbaar: %1$s</string>
+    <string name="update_dialog_message">Er is een nieuwere versie van Kapamilya Serena Mail beschikbaar!\n\nHuidige versie: %1$s\nNieuwste versie: %2$s\n\nRelease-opmerkingen:\n%3$s\n\nWil je de update nu installeren?</string>
+    <string name="update_btn_install_now">Nu bijwerken</string>
+    <string name="update_btn_open_github">Bekijken op GitHub</string>
+    <string name="update_btn_later">Later</string>
+    <string name="update_download_started">Bezig met downloaden van Kapamilya Serena Mail-update…</string>
+    <string name="update_download_finished">Download voltooid. Installatieprogramma wordt geopend…</string>
+    <string name="update_download_failed">Downloaden van update mislukt: %1$s</string>
+    <string name="update_permission_required">Sta \'Onbekende apps installeren\' toe voor Kapamilya Serena Mail om door te gaan met de update.</string>
+    <string name="update_launching_installer">Pakketinstallatieprogramma wordt gestart…</string>
+    <string name="update_install_failed">Kan installatieprogramma niet starten: %1$s</string>
+    <string name="update_already_latest">Kapamilya Serena Mail is up-to-date (%1$s).</string>
+    <string name="update_checking">Controleren op updates…</string>
+
+    <!-- Google OAuth & Simple Setup Strings -->
+    <string name="mail_btn_google_auth">Aanmelden met Google-account (1 tik)</string>
+    <string name="mail_btn_google_sign_in">Inloggen met Google</string>
+    <string name="mail_status_logged_in_as">Ingelogd als: %1$s</string>
+    <string name="mail_btn_logout">Uitloggen / Van account wisselen</string>
+    <string name="mail_btn_toggle_manual">Handmatige instelling weergeven (App-wachtwoord)</string>
+    <string name="mail_logged_out">Succesvol uitgelogd</string>
+    <string name="mail_login_prompt">Meld u aan met uw Google-account om e-mail direct te gebruiken zonder app-wachtwoord.</string>
+    <string name="mail_label_or_manual">— OF handmatig instellen met app-wachtwoord van 16 tekens —</string>
+    <string name="mail_btn_open_app_password_page">Webpagina voor Google App-wachtwoorden openen</string>
+    <string name="mail_oauth_connecting">Verifiëren met Google-account…</string>
+    <string name="mail_oauth_fallback_hint">Google-authenticatie mislukt. Voer een app-wachtwoord in bij handmatige instelling.</string>
+    <string name="mail_search_hint">Slim zoeken met EmbeddingGemma 2</string>
+    <string name="mail_btn_clear_search">Wissen</string>
+    <string name="mail_search_result_fmt">%1$d e-mails gevonden</string>
+
+    <!-- Attachments & Media Strings -->
+    <string name="mail_btn_attach_file">📎 Bestand of audio bijvoegen</string>
+    <string name="mail_btn_attach_audio">🎵 Audio bijvoegen (FLAC/WAV/MP3)</string>
+    <string name="mail_attachment_count_fmt">Bijlagen (%1$d)</string>
+    <string name="mail_attachment_item_a11y_fmt">Bijlage: %1$s, grootte: %2$s. Dubbeltik om te verwijderen.</string>
+    <string name="mail_attachment_removed_fmt">%1$s verwijderd</string>
+    <string name="mail_attachment_added_fmt">%1$s bijgevoegd</string>
+    <string name="mail_attachment_size_too_large">Bestand is te groot (maximaal 25 MB): %1$s</string>
+    <string name="mail_attachment_read_error">Kan bijlage niet lezen: %1$s</string>
+    <string name="mail_attachment_btn_remove">Verwijderen</string>
+    <string name="mail_attachment_unit_kb">%1$.1f KB</string>
+    <string name="mail_attachment_unit_mb">%1$.1f MB</string>
+    <!-- Official Portal & Artist Links (Shinji Sakiyama) -->
+    <string name="mail_artist_links_section_title">🎵 Officieel Portaal &amp; Muziek (Shinji Sakiyama)</string>
+    <string name="mail_artist_links_section_desc">Officieel portaal en a-capella muziekkanalen van ontwikkelaar en indie-artiest Shinji Sakiyama.</string>
+    <string name="mail_btn_artist_portal">🌐 Officieel Portaal (kapamilya.gitlab.io)</string>
+    <string name="mail_btn_artist_youtube">▶️ Officieel YouTube-kanaal (@mate_sachi)</string>
+    <string name="mail_btn_artist_youtube_music">🎧 Luister op YouTube Music</string>
+    <string name="mail_btn_artist_spotify">🟢 Luister op Spotify</string>
+    <string name="mail_btn_artist_amazon_music">📦 Luister op Amazon Music</string>
+    <string name="mail_btn_artist_apple_music">🍎 Luister op Apple Music</string>
+    <!-- Open-Standard IMAP Folder & Mail Actions (RFC 6154 SPECIAL-USE) -->
+    <string name="mail_folder_inbox">📥 Postvak IN</string>
+    <string name="mail_folder_starred">⭐ Met ster</string>
+    <string name="mail_folder_sent">📤 Verzonden</string>
+    <string name="mail_folder_drafts">📝 Concepten</string>
+    <string name="mail_folder_all">📚 Alle e-mail</string>
+    <string name="mail_folder_spam">🚫 Spam</string>
+    <string name="mail_folder_trash">🗑️ Prullenbak</string>
+    <string name="mail_btn_star_on">⭐ Ster toevoegen</string>
+    <string name="mail_btn_star_off">★ Ster verwijderen</string>
+    <string name="mail_btn_archive">📦 Archiveren</string>
+    <string name="mail_btn_delete">🗑️ Naar prullenbak</string>
+    <string name="mail_btn_mark_unread">✉️ Markeren als ongelezen</string>
+    <string name="mail_btn_save_draft">📝 Opslaan als concept</string>
+    <string name="mail_status_archived">Bericht gearchiveerd</string>
+    <string name="mail_status_moved_trash">Verplaatst naar prullenbak</string>
+    <string name="mail_status_marked_unread">Gemarkeerd als ongelezen</string>
+    <string name="mail_status_star_updated">Ster bijgewerkt</string>
+    <string name="mail_status_saving_draft">Concept opslaan...</string>
+    <string name="mail_status_draft_saved">Opgeslagen in Concepten</string>
+</resources>

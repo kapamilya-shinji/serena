@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/serena_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Top Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/app_name"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/serena_primary" />
+
+            <TextView
+                android:id="@+id/tvAppVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kapamilya Serena v2.8.0"
+                android:textColor="@color/serena_secondary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Status Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_label"
+                    android:textSize="14sp"
+                    android:textColor="@color/serena_text_muted" />
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_disabled"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/status_red"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="16dp" />
+
+                <Button
+                    android:id="@+id/btnOpenAccessibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="@string/btn_open_accessibility"
+                    android:textSize="16sp"
+                    android:backgroundTint="@color/serena_primary"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnOpenWelcomeGuide"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/btn_open_welcome_guide"
+                    android:textSize="15sp"
+                    android:backgroundTint="@color/serena_secondary"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnCheckUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/menu_item_check_update"
+                    android:textSize="15sp"
+                    android:backgroundTint="@color/serena_accent"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- OS Environment & Security Health Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_security_health"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvSecurityStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/security_diagnosing"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_text_dark"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tvSecurityDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/security_diagnosing_detail"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="10dp" />
+
+                <Button
+                    android:id="@+id/btnRecheckSecurity"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="@string/btn_recheck_security"
+                    android:backgroundTint="@color/serena_secondary"
+                    app:cornerRadius="10dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Permissions Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_permissions"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_text_dark"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Overlay Permission -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/perm_overlay_title"
+                        android:textColor="@color/serena_text_dark"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvOverlayStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status_perm_denied"
+                        android:textColor="@color/status_red"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnRequestOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="@string/btn_request_overlay"
+                    android:textSize="14sp"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="14dp"
+                    app:cornerRadius="10dp" />
+
+                <!-- Notification Permission -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/perm_notification_title"
+                        android:textColor="@color/serena_text_dark"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvNotificationStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status_perm_denied"
+                        android:textColor="@color/status_red"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnRequestNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="@string/btn_request_notification"
+                    android:textSize="14sp"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginTop="6dp"
+                    app:cornerRadius="10dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- TTS Settings Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_tts_settings"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_text_dark"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:id="@+id/tvSpeedLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_speech_rate_default"
+                    android:textColor="@color/serena_text_dark" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderSpeed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/label_speech_rate_default"
+                    android:valueFrom="0.5"
+                    android:valueTo="2.0"
+                    android:value="1.0"
+                    android:stepSize="0.1" />
+
+                <TextView
+                    android:id="@+id/tvPitchLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_pitch_default"
+                    android:textColor="@color/serena_text_dark"
+                    android:layout_marginTop="8dp" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderPitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/label_pitch_default"
+                    android:valueFrom="0.5"
+                    android:valueTo="2.0"
+                    android:value="1.0"
+                    android:stepSize="0.1" />
+
+                <Button
+                    android:id="@+id/btnTestSpeech"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_test_speech"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginTop="12dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnOpenTtsSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_open_tts_settings"
+                    android:backgroundTint="@color/serena_primary"
+                    android:layout_marginTop="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnManageCustomDictionary"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="📖 カスタム辞書（読み・詳細説明）の管理"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginTop="8dp"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Test Bench Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_test_bench"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_text_dark"
+                    android:layout_marginBottom="12dp" />
+
+                <EditText
+                    android:id="@+id/etTestInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/test_edit_hint"
+                    android:contentDescription="テスト入力フィールド"
+                    android:padding="14dp"
+                    android:background="@drawable/edit_text_bg"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <Button
+                        android:id="@+id/btnTestA"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/test_button_1"
+                        android:contentDescription="テストボタンA、押すと確認音を鳴らします"
+                        android:layout_marginEnd="6dp"
+                        app:cornerRadius="10dp" />
+
+                    <Button
+                        android:id="@+id/btnTestB"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/test_button_2"
+                        android:contentDescription="テストボタンB"
+                        android:layout_marginStart="6dp"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchDetailMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_switch_label"
+                    android:checked="true"
+                    android:layout_marginBottom="12dp" />
+
+                <Button
+                    android:id="@+id/btnTriggerMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/menu_serena_title"
+                    android:backgroundTint="@color/serena_primary"
+                    app:cornerRadius="10dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Features Summary Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_features"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature_1"
+                    android:textColor="@color/serena_text_muted"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature_2"
+                    android:textColor="@color/serena_text_muted"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature_3"
+                    android:textColor="@color/serena_text_muted"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feature_4"
+                    android:textColor="@color/serena_text_muted" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Hourly Chime Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_hourly_chime"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_hourly_chime"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="10dp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchHourlyChime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_hourly_chime_switch"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchHourlyChimeHalfHour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_hourly_chime_half_switch"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_hourly_chime_half_switch"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp" />
+
+                <Button
+                    android:id="@+id/btnTestHourlyChime"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="@string/btn_test_hourly_chime"
+                    android:backgroundTint="@color/serena_secondary"
+                    app:cornerRadius="10dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Smart Battery Announcements Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_smart_battery"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_smart_battery"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- 80% Protect Switch -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchSmartBattery80"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_smart_battery_80"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_smart_battery_80"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- Low Battery Reminder Switch -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchSmartBatteryLow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_smart_battery_low"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_smart_battery_low"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- Charging Steps Switch -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchSmartBatterySteps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_smart_battery_steps"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_smart_battery_steps"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- Estimated Charge Time Switch -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchSmartBatteryEstimate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_smart_battery_estimate"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_smart_battery_estimate"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Test Smart Battery Button -->
+                <Button
+                    android:id="@+id/btnTestSmartBattery"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="@string/btn_test_smart_battery"
+                    android:backgroundTint="@color/serena_primary"
+                    app:cornerRadius="10dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Call Assistant Settings Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_call_settings"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_call_settings"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="10dp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchCallPeriodicAnnounce"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_call_periodic_switch"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_call_periodic_switch"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Operation Guide Speech Settings Card (Beginner Assistance) -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔊 操作ガイド音声設定"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_announce_operation_actions"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="10dp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchAnnounceOperationActions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_announce_operation_actions"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_usage_hints"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="13sp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="8dp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchUsageHints"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_usage_hints"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Shake Sensitivity Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌸 シェイク感度設定"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="端末を振った際のアナウンス機能や操作停止の感度を調整します。"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="10dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgShakeSensitivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/rbShakeSensitive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shake_sensitive"
+                        android:textColor="@color/serena_text_dark" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/rbShakeNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shake_normal"
+                        android:textColor="@color/serena_text_dark" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/rbShakeFirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shake_firm"
+                        android:textColor="@color/serena_text_dark" />
+                </RadioGroup>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Alpha Telemetry & Privacy Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_telemetry"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_telemetry"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="10dp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchTelemetryOptIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_telemetry_optin"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp" />
+
+                <Button
+                    android:id="@+id/btnSendTelemetry"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_send_telemetry"
+                    android:backgroundTint="@color/serena_primary"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnCopyTelemetry"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="@string/btn_copy_telemetry"
+                    android:backgroundTint="@color/serena_secondary"
+                    app:cornerRadius="10dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Real-time Multilingual Translation Settings Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_translation_settings"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvTranslationTargetInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/translation_mode_orig_then_trans"
+                    android:textColor="@color/status_green"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desc_translation_settings"
+                    android:textColor="@color/serena_text_dark"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="12dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgTranslationMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <RadioButton
+                        android:id="@+id/rbTransOriginalThenTrans"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/translation_mode_orig_then_trans"
+                        android:textColor="@color/serena_text_dark"
+                        android:textSize="14sp" />
+
+                    <RadioButton
+                        android:id="@+id/rbTransOnly"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/translation_mode_trans_only"
+                        android:textColor="@color/serena_text_dark"
+                        android:textSize="14sp" />
+
+                    <RadioButton
+                        android:id="@+id/rbTransOff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/translation_mode_off"
+                        android:textColor="@color/serena_text_dark"
+                        android:textSize="14sp" />
+                </RadioGroup>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Developer & Signature Info Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@color/serena_card_bg">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_about_serena"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_serena_desc"
+                    android:textColor="@color/serena_text_dark"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="10dp" />
+
+                <!-- Golden Creed Quote -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_haptic_tile"
+                    android:padding="12dp"
+                    android:layout_marginBottom="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/contributor_serena_role"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/serena_primary"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/serena_golden_creed"
+                        android:textColor="@color/serena_text_dark"
+                        android:textSize="13sp"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <!-- Lead Developer Section -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/developer_role_label"
+                    android:textColor="@color/serena_primary"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/developer_role_desc"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/tvDeveloperPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/developer_phone_label"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="10dp" />
+
+                <Button
+                    android:id="@+id/btnCallDeveloper"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_call_developer"
+                    android:backgroundTint="@color/serena_primary"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnEmailDeveloper"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_email_developer"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnMessageDeveloper"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_message_developer"
+                    android:backgroundTint="@color/serena_accent"
+                    android:textColor="@color/serena_text_dark"
+                    android:layout_marginBottom="16dp"
+                    app:cornerRadius="12dp" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/serena_primary"
+                    android:alpha="0.2"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Official Portal & Artist Links (Shinji Sakiyama) -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/artist_links_section_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/artist_links_section_desc"
+                    android:textSize="13sp"
+                    android:textColor="@color/serena_text_dark"
+                    android:lineSpacingExtra="3dp"
+                    android:layout_marginBottom="10dp" />
+
+                <Button
+                    android:id="@+id/btnArtistPortal"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_artist_portal"
+                    android:backgroundTint="@color/serena_primary"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnArtistYouTube"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_artist_youtube"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnArtistYouTubeMusic"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_artist_youtube_music"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnArtistSpotify"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_artist_spotify"
+                    android:backgroundTint="@color/serena_primary"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnArtistAmazonMusic"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_artist_amazon_music"
+                    android:backgroundTint="@color/serena_accent"
+                    android:textColor="@color/serena_text_dark"
+                    android:layout_marginBottom="8dp"
+                    app:cornerRadius="12dp" />
+
+                <Button
+                    android:id="@+id/btnArtistAppleMusic"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/btn_artist_apple_music"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginBottom="16dp"
+                    app:cornerRadius="12dp" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/serena_primary"
+                    android:alpha="0.2"
+                    android:layout_marginBottom="14dp" />
+
+                <!-- Global Contributors Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_contributors_section"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/serena_primary"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Contributor 1: Luis Carlos -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contributor_luis_name"
+                    android:textColor="@color/serena_text_dark"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="2dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contributor_luis_role"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="6dp" />
+
+                <Button
+                    android:id="@+id/btnEmailLuis"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:text="@string/btn_email_luis"
+                    android:backgroundTint="@color/serena_secondary"
+                    android:layout_marginBottom="14dp"
+                    app:cornerRadius="12dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signature_label"
+                    android:textColor="@color/status_green"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/copyright_label"
+                    android:textColor="@color/serena_text_muted"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

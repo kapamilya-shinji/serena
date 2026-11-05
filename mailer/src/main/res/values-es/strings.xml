@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mail_app_name">Kapamilya Serena Mail</string>
+    <string name="mail_list_title">🌸 Bandeja de Kapamilya Serena Mail</string>
+    <string name="mail_detail_title">Detalles del mensaje</string>
+    <string name="mail_compose_title">Redactar correo</string>
+    <string name="mail_settings_title">Configuración de cuenta</string>
+
+    <string name="mail_btn_refresh">Actualizar bandeja</string>
+    <string name="mail_btn_compose">Redactar nuevo correo</string>
+    <string name="mail_btn_settings">Configuración</string>
+    <string name="mail_btn_summarize">Resumir con Gemma 4</string>
+    <string name="mail_btn_ai_reply">Crear respuesta IA</string>
+    <string name="mail_btn_reply">Responder</string>
+    <string name="mail_btn_send">Enviar correo</string>
+    <string name="mail_btn_save_account">Guardar y probar conexión</string>
+
+    <string name="mail_label_from">De: %1$s</string>
+    <string name="mail_label_to">Para: %1$s</string>
+    <string name="mail_label_date">Fecha: %1$s</string>
+    <string name="mail_label_subject">Asunto: %1$s</string>
+    <string name="mail_label_body">Mensaje: %1$s</string>
+
+    <string name="mail_hint_to">Dirección de correo del destinatario</string>
+    <string name="mail_hint_subject">Asunto</string>
+    <string name="mail_hint_body">Escriba su mensaje aquí</string>
+    <string name="mail_hint_email">Correo de Gmail (ej. usuario@gmail.com)</string>
+    <string name="mail_hint_app_password">Contraseña de aplicación de Google (16 caracteres)</string>
+
+    <string name="mail_status_connecting">Conectando al servidor…</string>
+    <string name="mail_status_connected">¡Conectado exitosamente!</string>
+    <string name="mail_status_fetching">Obteniendo correos…</string>
+    <string name="mail_status_fetched_fmt">Se obtuvieron %1$d correos.</string>
+    <string name="mail_status_sending">Enviando correo…</string>
+    <string name="mail_status_sent">¡Correo enviado exitosamente!</string>
+    <string name="mail_status_send_failed_fmt">Error al enviar: %1$s</string>
+    <string name="mail_status_error_fmt">Error: %1$s</string>
+    <string name="mail_status_no_account">No hay cuenta configurada. Abra la configuración para configurar su Gmail.</string>
+    <string name="mail_status_summarizing">Gemma 4 está resumiendo este correo…</string>
+    <string name="mail_status_generating_reply">Gemma 4 está redactando una respuesta con IA…</string>
+    <string name="mail_summary_result_fmt">Resumen de Gemma 4: %1$s</string>
+
+    <string name="mail_unread_indicator">No leído</string>
+    <string name="mail_read_indicator">Leído</string>
+    <string name="mail_item_a11y_fmt">%1$s. De %2$s. Asunto: %3$s. Fecha: %4$s.</string>
+    <string name="mail_settings_desc">Para usar Gmail, active la verificación en dos pasos en su cuenta de Google y genere una contraseña de aplicación de 16 caracteres.</string>
+
+    <!-- Auto Update Strings -->
+    <string name="mail_settings_check_update">Buscar actualizaciones de Kapamilya Serena Mail</string>
+    <string name="update_dialog_title">🚀 Actualización disponible de Kapamilya Serena Mail: %1$s</string>
+    <string name="update_dialog_message">¡Hay una versión más reciente de Kapamilya Serena Mail disponible!\n\nVersión actual: %1$s\nÚltima versión: %2$s\n\nNotas de la versión:\n%3$s\n\n¿Deseas instalar la actualización ahora?</string>
+    <string name="update_btn_install_now">Instalar actualización</string>
+    <string name="update_btn_open_github">Ver en GitHub</string>
+    <string name="update_btn_later">Más tarde</string>
+    <string name="update_download_started">Descargando APK de actualización de Kapamilya Serena Mail…</string>
+    <string name="update_download_finished">Descarga completada. Abriendo el instalador…</string>
+    <string name="update_download_failed">Error al descargar la actualización: %1$s</string>
+    <string name="update_permission_required">Permite \'Instalar aplicaciones desconocidas\' para que Kapamilya Serena Mail pueda continuar con la actualización.</string>
+    <string name="update_launching_installer">Iniciando instalador de paquetes…</string>
+    <string name="update_install_failed">Error al iniciar el instalador: %1$s</string>
+    <string name="update_already_latest">Kapamilya Serena Mail ya está actualizada (%1$s).</string>
+    <string name="update_checking">Buscando actualizaciones…</string>
+
+    <!-- Google OAuth & Simple Setup Strings -->
+    <string name="mail_btn_google_auth">Iniciar sesión con Cuenta de Google (1 toque)</string>
+    <string name="mail_btn_google_sign_in">Iniciar sesión con Google</string>
+    <string name="mail_status_logged_in_as">Sesión iniciada como: %1$s</string>
+    <string name="mail_btn_logout">Cerrar sesión / Cambiar de cuenta</string>
+    <string name="mail_btn_toggle_manual">Mostrar configuración manual (Contraseña de aplicación)</string>
+    <string name="mail_logged_out">Sesión cerrada correctamente</string>
+    <string name="mail_login_prompt">Inicia sesión con tu cuenta de Google para comenzar a usar el correo sin contraseña de aplicación.</string>
+    <string name="mail_label_or_manual">— O configurar con contraseña de aplicación de 16 caracteres —</string>
+    <string name="mail_btn_open_app_password_page">Abrir página de contraseñas de aplicaciones de Google</string>
+    <string name="mail_oauth_connecting">Autenticando con Cuenta de Google…</string>
+    <string name="mail_oauth_fallback_hint">Falló la autenticación con Google. Ingresa una contraseña de aplicación en la configuración manual.</string>
+    <string name="mail_search_hint">Búsqueda inteligente con EmbeddingGemma 2</string>
+    <string name="mail_btn_clear_search">Borrar</string>
+    <string name="mail_search_result_fmt">%1$d correos encontrados</string>
+
+    <!-- Attachments & Media Strings -->
+    <string name="mail_btn_attach_file">📎 Adjuntar archivo o audio</string>
+    <string name="mail_btn_attach_audio">🎵 Adjuntar audio (FLAC/WAV/MP3)</string>
+    <string name="mail_attachment_count_fmt">Archivos adjuntos (%1$d)</string>
+    <string name="mail_attachment_item_a11y_fmt">Adjunto: %1$s, tamaño: %2$s. Toque dos veces para eliminar.</string>
+    <string name="mail_attachment_removed_fmt">Se eliminó %1$s</string>
+    <string name="mail_attachment_added_fmt">Se adjuntó %1$s</string>
+    <string name="mail_attachment_size_too_large">El archivo es demasiado grande (máximo 25 MB): %1$s</string>
+    <string name="mail_attachment_read_error">Error al leer el archivo adjunto: %1$s</string>
+    <string name="mail_attachment_btn_remove">Eliminar</string>
+    <string name="mail_attachment_unit_kb">%1$.1f KB</string>
+    <string name="mail_attachment_unit_mb">%1$.1f MB</string>
+    <!-- Official Portal & Artist Links (Shinji Sakiyama) -->
+    <string name="mail_artist_links_section_title">🎵 Portal Oficial y Música (Shinji Sakiyama)</string>
+    <string name="mail_artist_links_section_desc">Portal oficial y canales de música a capela del desarrollador y artista independiente Shinji Sakiyama.</string>
+    <string name="mail_btn_artist_portal">🌐 Portal Oficial (kapamilya.gitlab.io)</string>
+    <string name="mail_btn_artist_youtube">▶️ Canal Oficial de YouTube (@mate_sachi)</string>
+    <string name="mail_btn_artist_youtube_music">🎧 Escuchar en YouTube Music</string>
+    <string name="mail_btn_artist_spotify">🟢 Escuchar en Spotify</string>
+    <string name="mail_btn_artist_amazon_music">📦 Escuchar en Amazon Music</string>
+    <string name="mail_btn_artist_apple_music">🍎 Escuchar en Apple Music</string>
+    <!-- Open-Standard IMAP Folder & Mail Actions (RFC 6154 SPECIAL-USE) -->
+    <string name="mail_folder_inbox">📥 Recibidos</string>
+    <string name="mail_folder_starred">⭐ Destacados</string>
+    <string name="mail_folder_sent">📤 Enviados</string>
+    <string name="mail_folder_drafts">📝 Borradores</string>
+    <string name="mail_folder_all">📚 Todos</string>
+    <string name="mail_folder_spam">🚫 Spam</string>
+    <string name="mail_folder_trash">🗑️ Papelera</string>
+    <string name="mail_btn_star_on">⭐ Destacar</string>
+    <string name="mail_btn_star_off">★ Quitar estrella</string>
+    <string name="mail_btn_archive">📦 Archivar</string>
+    <string name="mail_btn_delete">🗑️ Mover a la papelera</string>
+    <string name="mail_btn_mark_unread">✉️ Marcar como no leído</string>
+    <string name="mail_btn_save_draft">📝 Guardar borrador</string>
+    <string name="mail_status_archived">Mensaje archivado</string>
+    <string name="mail_status_moved_trash">Movido a la papelera</string>
+    <string name="mail_status_marked_unread">Marcado como no leído</string>
+    <string name="mail_status_star_updated">Estrella actualizada</string>
+    <string name="mail_status_saving_draft">Guardando borrador...</string>
+    <string name="mail_status_draft_saved">Guardado en Borradores</string>
+</resources>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#121212">
+
+    <!-- ヘッダー＆アクションバー -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1E1E1E"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mail_list_title"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:accessibilityHeading="true" />
+
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/mail_btn_refresh"
+            android:contentDescription="@string/mail_btn_refresh"
+            android:layout_marginEnd="6dp" />
+
+        <Button
+            android:id="@+id/btnCompose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/mail_btn_compose"
+            android:contentDescription="@string/mail_btn_compose"
+            android:layout_marginEnd="6dp" />
+
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/mail_btn_settings"
+            android:contentDescription="@string/mail_btn_settings" />
+    </LinearLayout>
+
+    <!-- RFC 6154 SPECIAL-USE 標準7大トレイ切替バー -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#161622"
+        android:scrollbars="none"
+        android:paddingVertical="6dp"
+        android:paddingHorizontal="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/btnFolderInbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/mail_folder_inbox"
+                android:contentDescription="@string/mail_folder_inbox"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnFolderStarred"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/mail_folder_starred"
+                android:contentDescription="@string/mail_folder_starred"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnFolderSent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/mail_folder_sent"
+                android:contentDescription="@string/mail_folder_sent"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnFolderDrafts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/mail_folder_drafts"
+                android:contentDescription="@string/mail_folder_drafts"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnFolderAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/mail_folder_all"
+                android:contentDescription="@string/mail_folder_all"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnFolderSpam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/mail_folder_spam"
+                android:contentDescription="@string/mail_folder_spam"
+                android:layout_marginEnd="6dp" />
+
+            <Button
+                android:id="@+id/btnFolderTrash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="@string/mail_folder_trash"
+                android:contentDescription="@string/mail_folder_trash" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- AI セマンティック検索バー (EmbeddingGemma 2) -->
+    <LinearLayout
+        android:id="@+id/layoutSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#181818"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/etSearchQuery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minHeight="48dp"
+            android:hint="@string/mail_search_hint"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#757575"
+            android:background="#242424"
+            android:padding="12dp"
+            android:inputType="text"
+            android:imeOptions="actionSearch" />
+
+        <Button
+            android:id="@+id/btnClearSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:text="@string/mail_btn_clear_search"
+            android:contentDescription="@string/mail_btn_clear_search"
+            android:layout_marginStart="6dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- ステータスバー（読み上げ用） -->
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="#2A2A2A"
+        android:textColor="#80D8FF"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:accessibilityLiveRegion="polite" />
+
+    <!-- メール一覧 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMails"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="6dp" />
+
+</LinearLayout>

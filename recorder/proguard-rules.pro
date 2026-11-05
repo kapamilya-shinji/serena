@@ -1,0 +1,1 @@
+-keep class com.shinji.serena.recorder.** { *; }

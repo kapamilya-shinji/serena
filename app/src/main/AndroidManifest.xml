@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk tools:overrideLibrary="com.google.ai.edge.aicore,com.google.ai.edge.litertlm,com.google.ai.edge.localagents.fc,com.google.ai.edge.localagents.rag,com.google.mlkit.genai.summarization,com.google.mlkit.genai.proofreading,com.google.mlkit.genai.rewriting,com.google.mlkit.genai.imagedescription,com.google.mlkit.genai.prompt,com.google.mlkit.genai.agent,com.google.mlkit.genai.embedding,com.google.mlkit.genai.speechrecognition,com.google.mlkit.genai.speechtranslation,com.google.mlkit.genai.tts,com.google.mlkit.genai.common" />
+
+    <queries>
+        <package android:name="com.google.android.aicore" />
+        <package android:name="com.google.android.gms" />
+        <package android:name="com.google.android.tts" />
+        <package android:name="com.reecedunn.espeak" />
+        <package android:name="com.samsung.SMT" />
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
+
+    <uses-permission android:name="android.permission.START_ACTIVITIES_FROM_BACKGROUND" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.START_FOREGROUND_SERVICES_FROM_BACKGROUND" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MANAGE_ACCESSIBILITY" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DEVICE_POWER" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.TURN_SCREEN_ON" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.STATUS_BAR" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.STATUS_BAR_SERVICE" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.CONTROL_KEYGUARD" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.MANAGE_KEYGUARD" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.ACCESS_KEYGUARD_SECURE_STORAGE" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.INJECT_EVENTS" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" tools:targetApi="tiramisu" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <attribution
+        android:tag="serena_accessibility"
+        android:label="@string/accessibility_service_name" />
+
+    <application
+        android:name=".SerenaApp"
+        android:allowBackup="true"
+        android:directBootAware="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Serena"
+        android:attributionTags="serena_accessibility">
+
+        <meta-data
+            android:name="developer_name"
+            android:value="@string/developer_name" />
+        <meta-data
+            android:name="app_provider"
+            android:value="@string/provider_name" />
+        <meta-data
+            android:name="copyright"
+            android:value="@string/copyright_label" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:directBootAware="true"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".update.AutoUpdateInstallReceiver"
+            android:directBootAware="true"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LiveVisionActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Serena" />
+
+        <!-- Serena オンデバイスAI対話チャット -->
+        <activity
+            android:name=".ai.SerenaAiChatActivity"
+            android:exported="true"
+            android:label="@string/chat_title"
+            android:theme="@style/Theme.Serena" />
+
+        <service
+            android:name=".SerenaScreenReaderService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:foregroundServiceType="specialUse"
+            android:exported="true"
+            android:directBootAware="true"
+            android:label="@string/accessibility_service_name"
+            android:description="@string/accessibility_service_description">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <service
+            android:name=".ime.SerenaInputMethodService"
+            android:label="@string/ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            android:exported="true"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <!-- Official Android Registered Open JTalk TTS Engine (Kapamilya Serena & Kapamilya Serena Mail — Default: tohoku-f01-neutral) -->
+        <service
+            android:name=".speech.KapamilyaOpenJTalkTtsService"
+            android:directBootAware="true"
+            android:exported="true"
+            android:label="Kapamilya Open JTalk (tohoku-f01-neutral / mei_normal)">
+            <intent-filter>
+                <action android:name="android.intent.action.TTS_SERVICE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.speech.tts"
+                android:resource="@xml/tts_engine" />
+        </service>
+
+        <activity
+            android:name=".speech.CheckOpenJTalkVoiceDataActivity"
+            android:directBootAware="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.CHECK_TTS_DATA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".speech.InstallOpenJTalkVoiceDataActivity"
+            android:directBootAware="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.INSTALL_TTS_DATA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".speech.GetOpenJTalkSampleTextActivity"
+            android:directBootAware="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.GET_SAMPLE_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".speech.OpenJTalkTtsSettingsActivity"
+            android:directBootAware="true"
+            android:exported="true"
+            android:label="Kapamilya Open JTalk 音声設定"
+            android:theme="@style/Theme.Serena">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.CONFIGURE_ENGINE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Official Android Registered Piper Multilingual Female TTS Engine (Tagalog, Japanese, English, 13 Languages — Female Only) -->
+        <service
+            android:name=".speech.KapamilyaPiperTtsService"
+            android:directBootAware="true"
+            android:exported="true"
+            android:label="Kapamilya Piper 多言語女性音声エンジン (Tagalog / 日本語 / 英語 / 多言語 Female)">
+            <intent-filter>
+                <action android:name="android.intent.action.TTS_SERVICE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.speech.tts"
+                android:resource="@xml/tts_piper_engine" />
+        </service>
+
+        <activity
+            android:name=".speech.CheckPiperVoiceDataActivity"
+            android:directBootAware="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.CHECK_TTS_DATA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".speech.InstallPiperVoiceDataActivity"
+            android:directBootAware="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.INSTALL_TTS_DATA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".speech.GetPiperSampleTextActivity"
+            android:directBootAware="true"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.GET_SAMPLE_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".speech.PiperTtsSettingsActivity"
+            android:directBootAware="true"
+            android:exported="true"
+            android:label="Kapamilya Piper 多言語女性音声設定"
+            android:theme="@style/Theme.Serena">
+            <intent-filter>
+                <action android:name="android.speech.tts.engine.CONFIGURE_ENGINE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

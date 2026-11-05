@@ -1,0 +1,529 @@
+package com.kapamilya.serena.navigation
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
+import android.os.Looper
+import android.util.Log
+import com.kapamilya.serena.SpatialCompassHelper
+import java.util.Locale
+
+/**
+ * Serena 徒歩ナビゲーションエンジン (Serena Pedestrian Walking Navigator)
+ * Google Maps API / キー完全不要・完全無料。
+ * Android標準のGPS・Geocoderおよび電子コンパスを融合し、
+ * クロックポジション（1時〜12時）と詳細方向（右前、左斜め後ろ等）による安全な音声歩行誘導を提供。
+ */
+class SerenaWalkingNavigator(
+    private val context: Context,
+    private val compassHelper: SpatialCompassHelper?
+) : LocationListener {
+
+    companion object {
+        private const val TAG = "SerenaWalkingNavigator"
+    }
+
+    data class NavDestination(
+        val name: String,
+        val latitude: Double,
+        val longitude: Double,
+        val address: String = ""
+    )
+
+    private val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+    private val embeddingGemma2 by lazy { com.kapamilya.serena.ai.EmbeddingGemma2Engine.getInstance(context) }
+    private val gemma4Engine by lazy { com.kapamilya.serena.ai.Gemma4EdgeEngine.getInstance(context) }
+    var currentLocation: Location? = null
+        private set
+
+    var activeDestination: NavDestination? = null
+        private set
+
+    private var isTracking = false
+
+    @SuppressLint("MissingPermission")
+    fun startTracking() {
+        if (isTracking) return
+        try {
+            val providers = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
+            for (provider in providers) {
+                if (locationManager?.isProviderEnabled(provider) == true) {
+                    locationManager.requestLocationUpdates(
+                        provider,
+                        2000L, // 2秒間隔
+                        1.0f,  // 1メートル移動ごと
+                        this,
+                        Looper.getMainLooper()
+                    )
+                    val lastKnown = locationManager.getLastKnownLocation(provider)
+                    if (lastKnown != null && (currentLocation == null || lastKnown.time > (currentLocation?.time ?: 0))) {
+                        currentLocation = lastKnown
+                    }
+                }
+            }
+            isTracking = true
+            Log.i(TAG, "SerenaWalkingNavigator started tracking.")
+        } catch (e: SecurityException) {
+            Log.w(TAG, "Location permission not granted: ${e.message}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to start location tracking: ${e.message}")
+        }
+    }
+
+    fun stopTracking() {
+        if (!isTracking) return
+        isTracking = false
+        try {
+            locationManager?.removeUpdates(this)
+        } catch (_: Exception) {}
+    }
+
+    override fun onLocationChanged(location: Location) {
+        currentLocation = location
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    override fun onProviderEnabled(provider: String) {}
+    override fun onProviderDisabled(provider: String) {}
+
+    /**
+     * 現在地の町名・番地住所を日本語で取得（APIキー不要・完全無料）
+     */
+    fun getCurrentAddressSync(): String {
+        val loc = currentLocation ?: return context.getString(com.kapamilya.serena.R.string.loc_out_of_range)
+        return try {
+            val geocoder = Geocoder(context, Locale.getDefault())
+            @Suppress("DEPRECATION")
+            val addresses: List<Address>? = geocoder.getFromLocation(loc.latitude, loc.longitude, 3)
+            if (!addresses.isNullOrEmpty()) {
+                val addr = addresses[0]
+                
+                // 1. getAddressLine(0) から完全な正式住所を取得してサニタイズ
+                val rawLine = addr.getAddressLine(0) ?: ""
+                if (rawLine.isNotEmpty()) {
+                    val cleanAddress = rawLine
+                        .replace(Regex("^日本、?"), "")
+                        .replace(Regex("〒[0-9]{3}-?[0-9]{4}\\s*"), "")
+                        .trim()
+                    if (cleanAddress.isNotEmpty()) {
+                        return cleanAddress
+                    }
+                }
+
+                // 2. フォールバック：町名(subLocality)・番地(thoroughfare/featureName)を一切漏らさず連結
+                val admin = addr.adminArea ?: ""
+                val locality = addr.locality ?: addr.subAdminArea ?: ""
+                val subLocality = addr.subLocality ?: ""
+                val thoroughfare = addr.thoroughfare ?: ""
+                val subThoroughfare = addr.subThoroughfare ?: ""
+                val feature = addr.featureName ?: ""
+
+                val parts = mutableListOf<String>()
+                if (admin.isNotEmpty()) parts.add(admin)
+                if (locality.isNotEmpty() && locality != admin) parts.add(locality)
+                if (subLocality.isNotEmpty() && !parts.contains(subLocality)) parts.add(subLocality)
+                if (thoroughfare.isNotEmpty() && !parts.contains(thoroughfare)) parts.add(thoroughfare)
+                if (subThoroughfare.isNotEmpty() && !parts.contains(subThoroughfare)) parts.add(subThoroughfare)
+                if (feature.isNotEmpty() && !parts.contains(feature) && feature != locality && feature != subLocality) parts.add(feature)
+
+                val full = parts.joinToString("")
+                if (full.isNotEmpty()) full else context.getString(com.kapamilya.serena.R.string.loc_coords_fmt, String.format(Locale.US, "%.4f", loc.latitude), String.format(Locale.US, "%.4f", loc.longitude))
+            } else {
+                context.getString(com.kapamilya.serena.R.string.loc_coords_fmt, String.format(Locale.US, "%.4f", loc.latitude), String.format(Locale.US, "%.4f", loc.longitude))
+            }
+        } catch (e: Exception) {
+            context.getString(com.kapamilya.serena.R.string.loc_coords_fmt, String.format(Locale.US, "%.4f", loc.latitude), String.format(Locale.US, "%.4f", loc.longitude))
+        }
+    }
+
+    data class NavPlace(
+        val name: String,
+        val address: String,
+        val distanceMeters: Int,
+        val latitude: Double,
+        val longitude: Double,
+        val phone: String = "",
+        val website: String = ""
+    )
+
+    /**
+     * Overpass API（OpenStreetMap）から現在地周辺の100%正確な店舗名・駅名・施設名を取得
+     */
+    private fun fetchOverpassPlaces(category: String, loc: Location): List<NavPlace> {
+        val radiusMeters = 2500 // 半径2.5km
+        val lowerCat = category.lowercase(Locale.ROOT)
+        val filter = when {
+            category == "コンビニ" || lowerCat.contains("convenience") || lowerCat.contains("tindahan") || lowerCat.contains("supermarkt") ->
+                """node["shop"="convenience"](around:$radiusMeters,${loc.latitude},${loc.longitude});way["shop"="convenience"](around:$radiusMeters,${loc.latitude},${loc.longitude});"""
+            category == "駅" || lowerCat.contains("station") || lowerCat.contains("estasyon") || lowerCat.contains("estación") ->
+                """node["railway"="station"](around:5000,${loc.latitude},${loc.longitude});node["station"](around:5000,${loc.latitude},${loc.longitude});"""
+            category == "喫茶店" || category == "カフェ" || lowerCat.contains("cafe") || lowerCat.contains("café") || lowerCat.contains("coffee") ->
+                """node["amenity"="cafe"](around:$radiusMeters,${loc.latitude},${loc.longitude});way["amenity"="cafe"](around:$radiusMeters,${loc.latitude},${loc.longitude});"""
+            category == "ファストフード" || lowerCat.contains("fast food") || lowerCat.contains("fast_food") ->
+                """node["amenity"="fast_food"](around:$radiusMeters,${loc.latitude},${loc.longitude});way["amenity"="fast_food"](around:$radiusMeters,${loc.latitude},${loc.longitude});"""
+            category == "レストラン" || category == "飲食店" || lowerCat.contains("restaurant") || lowerCat.contains("restaurante") || lowerCat.contains("kainan") ->
+                """node["amenity"="restaurant"](around:$radiusMeters,${loc.latitude},${loc.longitude});way["amenity"="restaurant"](around:$radiusMeters,${loc.latitude},${loc.longitude});"""
+            category in listOf("スーパー", "ショッピングモール", "食料品店") || lowerCat.contains("supermarket") || lowerCat.contains("mall") || lowerCat.contains("grocery") || lowerCat.contains("supermercado") ->
+                """node["shop"="supermarket"](around:4000,${loc.latitude},${loc.longitude});way["shop"="supermarket"](around:4000,${loc.latitude},${loc.longitude});node["shop"="mall"](around:4000,${loc.latitude},${loc.longitude});"""
+            category in listOf("病院", "薬局") || lowerCat.contains("hospital") || lowerCat.contains("pharmacy") || lowerCat.contains("farmacia") || lowerCat.contains("botika") || lowerCat.contains("apotheek") ->
+                """node["amenity"="hospital"](around:$radiusMeters,${loc.latitude},${loc.longitude});node["amenity"="clinic"](around:$radiusMeters,${loc.latitude},${loc.longitude});node["amenity"="pharmacy"](around:$radiusMeters,${loc.latitude},${loc.longitude});"""
+            category in listOf("郵便局", "銀行") || lowerCat.contains("bank") || lowerCat.contains("post") || lowerCat.contains("banco") || lowerCat.contains("bangko") ->
+                """node["amenity"="post_office"](around:$radiusMeters,${loc.latitude},${loc.longitude});node["amenity"="bank"](around:$radiusMeters,${loc.latitude},${loc.longitude});"""
+            else -> """node["name"~"$category"](around:$radiusMeters,${loc.latitude},${loc.longitude});"""
+        }
+
+        val q = "[out:json][timeout:4];($filter);out center 15;"
+        val encodedQuery = java.net.URLEncoder.encode(q, "UTF-8")
+        val endpoints = listOf(
+            "https://overpass-api.de/api/interpreter?data=$encodedQuery",
+            "https://maps.mail.ru/osm/tools/overpass/api/interpreter?data=$encodedQuery"
+        )
+
+        for (endpoint in endpoints) {
+            try {
+                val url = java.net.URL(endpoint)
+                val conn = url.openConnection() as java.net.HttpURLConnection
+                conn.connectTimeout = 3000
+                conn.readTimeout = 3000
+                conn.requestMethod = "GET"
+                conn.setRequestProperty("User-Agent", "SerenaScreenReader/1.0 (Android; Accessibility)")
+
+                val body = try {
+                    if (conn.responseCode == 200) {
+                        conn.inputStream.bufferedReader().use { it.readText() }
+                    } else null
+                } finally {
+                    conn.disconnect()
+                }
+                if (body != null) {
+                    val json = org.json.JSONObject(body)
+                    val elements = json.optJSONArray("elements") ?: continue
+
+                    val places = mutableListOf<NavPlace>()
+                    for (i in 0 until elements.length()) {
+                        val elem = elements.getJSONObject(i)
+                        val tags = elem.optJSONObject("tags") ?: continue
+                        var name = tags.optString("name", "").trim()
+                        val branch = tags.optString("branch", "").trim()
+                        val brand = tags.optString("brand", "").trim()
+
+                        if (name.isEmpty() && brand.isNotEmpty()) {
+                            name = if (branch.isNotEmpty()) "$brand $branch" else brand
+                        } else if (name.isNotEmpty() && branch.isNotEmpty() && !name.contains(branch)) {
+                            name = "$name $branch"
+                        }
+
+                        if (name.isEmpty()) continue
+
+                        val pLat = if (elem.has("lat")) elem.getDouble("lat") else elem.optJSONObject("center")?.optDouble("lat") ?: 0.0
+                        val pLon = if (elem.has("lon")) elem.getDouble("lon") else elem.optJSONObject("center")?.optDouble("lon") ?: 0.0
+                        if (pLat == 0.0 || pLon == 0.0) continue
+
+                        val dist = FloatArray(1)
+                        Location.distanceBetween(loc.latitude, loc.longitude, pLat, pLon, dist)
+                        val distMeters = dist[0].toInt()
+
+                        val phoneNum = tags.optString("phone", tags.optString("contact:phone", ""))
+                        val webUrl = tags.optString("website", tags.optString("contact:website", "https://www.google.com/search?q=${java.net.URLEncoder.encode(name, "UTF-8")}"))
+                        val street = tags.optString("addr:street", "")
+                        val housenumber = tags.optString("addr:housenumber", "")
+                        val addressDesc = if (street.isNotEmpty()) "$street $housenumber" else name
+
+                        places.add(
+                            NavPlace(
+                                name = name,
+                                address = addressDesc,
+                                distanceMeters = distMeters,
+                                latitude = pLat,
+                                longitude = pLon,
+                                phone = phoneNum,
+                                website = webUrl
+                            )
+                        )
+                    }
+
+                    if (places.isNotEmpty()) {
+                        return places.sortedBy { it.distanceMeters }.take(8)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Overpass query failed on $endpoint: ${e.message}")
+            }
+        }
+        return emptyList()
+    }
+
+    /**
+     * 現在地周辺の施設候補（コンビニ・駅・喫茶店・ファストフード・スーパー・レストラン等）を複数件検索して距離順で取得
+     */
+    fun searchNearbyPlaces(category: String): List<NavPlace> {
+        val loc = currentLocation
+        if (loc != null) {
+            val osmPlaces = fetchOverpassPlaces(category, loc)
+            if (osmPlaces.isNotEmpty()) {
+                return osmPlaces
+            }
+        }
+
+        val geocoder = Geocoder(context, Locale.getDefault())
+        val candidatePlaces = mutableListOf<NavPlace>()
+        val addressSync = try { getCurrentAddressSync() } catch (_: Exception) { "" }
+        val isJa = Locale.getDefault().language.lowercase() == "ja"
+        val city = if (isJa && addressSync.contains("市")) addressSync.substringBefore("市") + "市" else ""
+
+        val queries = mutableListOf<String>()
+        if (!isJa) {
+            queries.add(category)
+        } else {
+            when (category) {
+                "コンビニ" -> {
+                    if (city.isNotEmpty()) {
+                        queries.add("$city セブンイレブン")
+                        queries.add("$city ローソン")
+                        queries.add("$city ファミリーマート")
+                        queries.add("$city ミニストップ")
+                    }
+                    queries.add("セブンイレブン")
+                    queries.add("ローソン")
+                    queries.add("ファミリーマート")
+                    queries.add("コンビニ")
+                }
+                "駅" -> {
+                    if (city.isNotEmpty()) {
+                        queries.add("$city 駅")
+                    }
+                    queries.add("駅")
+                    queries.add("JR駅")
+                    queries.add("近鉄駅")
+                    queries.add("養老鉄道駅")
+                }
+                "喫茶店", "カフェ" -> {
+                    if (city.isNotEmpty()) {
+                        queries.add("$city コメダ珈琲")
+                        queries.add("$city スターバックス")
+                        queries.add("$city ドトール")
+                        queries.add("$city カフェ")
+                        queries.add("$city 喫茶店")
+                    }
+                    queries.add("コメダ珈琲")
+                    queries.add("スターバックス")
+                    queries.add("カフェ")
+                    queries.add("喫茶店")
+                }
+                "ファストフード" -> {
+                    if (city.isNotEmpty()) {
+                        queries.add("$city マクドナルド")
+                        queries.add("$city モスバーガー")
+                        queries.add("$city ケンタッキー")
+                        queries.add("$city すき家")
+                        queries.add("$city 吉野家")
+                    }
+                    queries.add("マクドナルド")
+                    queries.add("モスバーガー")
+                    queries.add("すき家")
+                }
+                "レストラン", "飲食店" -> {
+                    if (city.isNotEmpty()) {
+                        queries.add("$city ガスト")
+                        queries.add("$city サイゼリヤ")
+                        queries.add("$city レストラン")
+                        queries.add("$city 食堂")
+                    }
+                    queries.add("レストラン")
+                    queries.add("定食")
+                }
+                "スーパー", "ショッピングモール", "食料品店" -> {
+                    if (city.isNotEmpty()) {
+                        queries.add("$city イオン")
+                        queries.add("$city 平和堂")
+                        queries.add("$city スーパー")
+                        queries.add("$city バロー")
+                        queries.add("$city ドラッグストア")
+                    }
+                    queries.add("イオン")
+                    queries.add("スーパーマーケット")
+                    queries.add("ショッピングモール")
+                }
+                "病院", "薬局" -> {
+                    if (city.isNotEmpty()) {
+                        queries.add("$city 総合病院")
+                        queries.add("$city クリニック")
+                        queries.add("$city 薬局")
+                    }
+                    queries.add("病院")
+                    queries.add("クリニック")
+                    queries.add("調剤薬局")
+                }
+                "郵便局", "銀行" -> {
+                    if (city.isNotEmpty()) {
+                        queries.add("$city 郵便局")
+                        queries.add("$city 銀行")
+                    }
+                    queries.add("郵便局")
+                    queries.add("銀行")
+                }
+                else -> {
+                    if (city.isNotEmpty()) queries.add("$city $category")
+                    queries.add(category)
+                }
+            }
+        }
+
+        val seenKeys = mutableSetOf<String>()
+
+        for (query in queries) {
+            try {
+                @Suppress("DEPRECATION")
+                val results = if (loc != null) {
+                    val latDelta = 0.08 // 約8km四方
+                    val lonDelta = 0.08
+                    geocoder.getFromLocationName(
+                        query,
+                        6,
+                        loc.latitude - latDelta,
+                        loc.longitude - lonDelta,
+                        loc.latitude + latDelta,
+                        loc.longitude + lonDelta
+                    )
+                } else {
+                    geocoder.getFromLocationName(query, 5)
+                }
+
+                results?.forEach { r ->
+                    val fullAddress = r.getAddressLine(0)?.replace(Regex("^日本、?"), "")?.replace(Regex("〒[0-9-]+\\s*"), "")?.trim() ?: ""
+                    var featName = r.featureName ?: ""
+
+                    // featureName が番地数字のみ（例: "1741"）の場合は query 名を付与
+                    val isNumberOnly = featName.matches(Regex("^[0-9-]+$"))
+                    var displayName = when {
+                        featName.isNotEmpty() && !isNumberOnly && featName != city -> featName
+                        r.thoroughfare != null && !r.thoroughfare.matches(Regex("^[0-9-]+$")) -> "${query.substringAfter(" ")}（${r.thoroughfare}）"
+                        fullAddress.isNotEmpty() -> "${query.substringAfter(" ")}（$fullAddress）"
+                        else -> query
+                    }
+
+                    val uniqueKey = "${r.latitude.toBigDecimal().setScale(4, java.math.RoundingMode.HALF_UP)},${r.longitude.toBigDecimal().setScale(4, java.math.RoundingMode.HALF_UP)}"
+                    
+                    if (!seenKeys.contains(uniqueKey)) {
+                        seenKeys.add(uniqueKey)
+                        val dist = FloatArray(1)
+                        if (loc != null) {
+                            Location.distanceBetween(loc.latitude, loc.longitude, r.latitude, r.longitude, dist)
+                        }
+                        val distMeters = dist[0].toInt()
+                        val phoneNum = r.phone ?: ""
+                        val webUrl = r.url ?: "https://www.google.com/search?q=${java.net.URLEncoder.encode("$displayName $fullAddress", "UTF-8")}"
+                        
+                        candidatePlaces.add(
+                            NavPlace(
+                                name = displayName,
+                                address = if (fullAddress.isNotEmpty()) fullAddress else displayName,
+                                distanceMeters = distMeters,
+                                latitude = r.latitude,
+                                longitude = r.longitude,
+                                phone = phoneNum,
+                                website = webUrl
+                            )
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Search query '$query' error: ${e.message}")
+            }
+        }
+
+        return candidatePlaces.sortedBy { it.distanceMeters }.take(8)
+    }
+
+    /**
+     * 施設名や住所から現在地周辺の最寄り目的地を設定
+     */
+    fun setDestinationByName(name: String): Boolean {
+        val places = searchNearbyPlaces(name)
+        if (places.isNotEmpty()) {
+            val best = places[0]
+            activeDestination = NavDestination(best.name, best.latitude, best.longitude, best.address)
+            return true
+        }
+        return false
+    }
+
+    fun setDestinationCoordinates(name: String, latitude: Double, longitude: Double) {
+        activeDestination = NavDestination(name, latitude, longitude)
+    }
+
+    fun clearDestination() {
+        activeDestination = null
+    }
+
+    /**
+     * 目的地へのリアルタイム徒歩ナビゲーション案内文を生成
+     */
+    fun getNavigationGuidance(): String {
+        val dest = activeDestination ?: return context.getString(com.kapamilya.serena.R.string.nav_no_destination_fmt, getCurrentAddressSync())
+        val loc = currentLocation ?: return context.getString(com.kapamilya.serena.R.string.nav_waiting_gps_fmt, dest.name)
+
+        // 1. 直線距離（m）と目的地方位角（bearing）を計算
+        val results = FloatArray(2)
+        Location.distanceBetween(loc.latitude, loc.longitude, dest.latitude, dest.longitude, results)
+        val distanceMeters = results[0].toInt()
+        var targetBearing = results[1]
+        if (targetBearing < 0) targetBearing += 360f
+
+        // 2. 空間コンパスから直感的な相対方向を取得
+        val compass = compassHelper
+        val clockGuidance = compass?.getClockPositionGuidance(targetBearing)
+
+        // 3. 到着判定 (10m以内)
+        if (distanceMeters <= 10) {
+            return context.getString(com.kapamilya.serena.R.string.valhalla_arrived_fmt, dest.name)
+        }
+
+        // 4. ナビゲーション案内アナウンス
+        val dirText = clockGuidance?.directionText ?: context.getString(com.kapamilya.serena.R.string.dir_front)
+        val advice = if (clockGuidance?.isStraightAhead == true) {
+            compass.checkTargetAlignmentHaptic(targetBearing)
+            context.getString(com.kapamilya.serena.R.string.nav_straight_advice)
+        } else {
+            clockGuidance?.detailedDescription ?: ""
+        }
+
+        val guidanceMsg = context.getString(com.kapamilya.serena.R.string.nav_status_fmt, dest.name, distanceMeters, dirText, advice).trim()
+        try {
+            val vec = embeddingGemma2.embedMultimodalElement(
+                text = guidanceMsg,
+                contentDesc = "${dest.name} ($dirText, ${distanceMeters}m)",
+                className = "SerenaWalkingNavigator",
+                viewId = dest.name,
+                spatialNormX = 0.5f,
+                spatialNormY = 0.5f,
+                useFast128D = true
+            )
+            val vNorm = vec.take(8).map { kotlin.math.abs(it) }.average().toFloat()
+            embeddingGemma2.memorizeKnowledgeChunk(
+                id = "walking_nav_guidance",
+                category = "koko_nav_walking",
+                title = "Kapamilya Serena Walking Nav (${dest.name})",
+                content = "$guidanceMsg [EmbeddingGemma2-128D norm=${String.format(Locale.US, "%.2f", vNorm)}]"
+            )
+            gemma4Engine.isModelDownloaded()
+        } catch (_: Exception) {}
+        return guidanceMsg
+    }
+
+    /**
+     * 現在地情報のサマリー読み上げ
+     */
+    fun getCurrentLocationSummary(): String {
+        val address = getCurrentAddressSync()
+        val compass = compassHelper
+        val direction = compass?.getDirectionName() ?: context.getString(com.kapamilya.serena.R.string.cardinal_n)
+        return context.getString(com.kapamilya.serena.R.string.loc_summary_fmt, address, direction)
+    }
+}

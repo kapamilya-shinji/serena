@@ -1,0 +1,301 @@
+package com.kapamilya.serena.ai
+
+import android.content.Context
+import com.kapamilya.serena.R
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.regex.Pattern
+
+/**
+ * FoodAndExpirationScannerHelper
+ * 完全オンデバイス・オフラインで動作する
+ * 食品・賞味期限・消費期限・お買い物バーコード・書類スキャナーエンジン。
+ */
+object FoodAndExpirationScannerHelper {
+
+    data class ExpirationResult(
+        val dateString: String,       // 例: "2026年9月15日"
+        val labelType: String,        // "賞味期限" または "消費期限"
+        val remainingDays: Int?,      // 残り日数（負の値は期限切れ）
+        val spokenMessage: String     // 読み上げ用メッセージ
+    )
+
+    data class FoodAnalysisResult(
+        val category: String,         // 例: "調味料", "飲料", "レトルト食品", "お菓子・スナック", "缶詰"
+        val estimatedItemName: String,// 例: "しょうゆ", "緑茶ペットボトル", "カレー", "ポテトチップス"
+        val expiration: ExpirationResult?,
+        val detectedTexts: List<String>
+    )
+
+    data class DocumentSummaryResult(
+        val docType: String,          // 例: "レシート", "請求書・納付書", "郵便物・書類"
+        val totalAmount: String?,     // 例: "1,280円"
+        val dueDate: String?,         // 例: "2026年8月31日"
+        val summarySpokenText: String
+    )
+
+    // 日付正規表現パターン
+    private val DATE_PATTERNS = listOf(
+        // パターン1: 2026年9月15日 / 2026.09.15 / 2026/09/15 / 2026-09-15
+        Pattern.compile("(?i)(賞味期限|消費期限|賞味|消費|期限)?[:：\\s]*([2-3][0-9]{3})[年./\\-](0?[1-9]|1[0-2])[月./\\-](0?[1-9]|[12][0-9]|3[01])[日]?"),
+        // パターン2: 26.09.15 / 26/09/15 (西暦下2桁)
+        Pattern.compile("(?i)(賞味期限|消費期限|賞味|消費|期限)?[:：\\s]*([2-3][0-9])[./\\-](0?[1-9]|1[0-2])[./\\-](0?[1-9]|[12][0-9]|3[01])"),
+        // パターン3: 和暦 R8.9.15 / 令和8年9月15日
+        Pattern.compile("(?i)(賞味期限|消費期限|賞味|消費|期限)?[:：\\s]*(?:令|令和|R)([1-9]|1[0-9])[年./\\-](0?[1-9]|1[0-2])[月./\\-](0?[1-9]|[12][0-9]|3[01])[日]?"),
+        // パターン4: 9月15日
+        Pattern.compile("(?i)(賞味期限|消費期限|賞味|消費|期限)?[:：\\s]*(0?[1-9]|1[0-2])月(0?[1-9]|[12][0-9]|3[01])日"),
+        // パターン5: 年月のみ 2026.09 / 2026年9月 / 26.09
+        Pattern.compile("(?i)(賞味期限|消費期限|賞味|消費|期限)?[:：\\s]*([2-3][0-9]{3}|[2-3][0-9])[年./\\-](0?[1-9]|1[0-2])[月]?$")
+    )
+
+    // 食品カテゴリとキーワード定義
+    private val FOOD_KEYWORDS = mapOf(
+        "調味料" to listOf(
+            "しょうゆ", "醤油", "みそ", "味噌", "マヨネーズ", "ケチャップ", "ソース", "ドレッシング",
+            "油", "オリーブオイル", "ごま油", "みりん", "料理酒", "酢", "ポン酢", "塩", "コショウ", "砂糖", "つゆ", "めんつゆ"
+        ),
+        "飲料" to listOf(
+            "お茶", "緑茶", "麦茶", "烏龍茶", "ほうじ茶", "紅茶", "コーヒー", "珈琲", "水", "天然水",
+            "牛乳", "豆乳", "ジュース", "炭酸", "コーラ", "サイダー", "スポーツドリンク", "ポカリスエット", "アクエリアス"
+        ),
+        "レトルト・主食" to listOf(
+            "カレー", "カリー", "シチュー", "パスタ", "スパゲッティ", "ラーメン", "うどん", "そば",
+            "ごはん", "白米", "パックご飯", "食パン", "パン", "カップ麺", "やきそば", "中華丼", "牛丼"
+        ),
+        "お菓子・スナック" to listOf(
+            "ポテトチップス", "チョコ", "チョコレート", "クッキー", "ビスケット", "せんべい", "煎餅",
+            "あめ", "キャンディ", "グミ", "アイス", "プリン", "ゼリー", "ケーキ", "スナック"
+        ),
+        "缶詰・保存食" to listOf(
+            "ツナ", "シーチキン", "サバ", "さば水煮", "さば味噌煮", "いわし", "さんま", "トマト缶",
+            "コーン", "フルーツ缶", "みかん缶", "パイン缶", "焼鳥"
+        ),
+        "生鮮・日配品" to listOf(
+            "納豆", "豆腐", "たまご", "卵", "ヨーグルト", "チーズ", "バター", "ハム", "ソーセージ",
+            "ウインナー", "ベーコン", "ちくわ", "かまぼこ"
+        )
+    )
+
+    /**
+     * OCRテキストから賞味期限・消費期限を解析抽出
+     */
+    fun extractExpirationDate(ocrText: String, context: Context? = null): ExpirationResult? {
+        val cleanText = ocrText.replace(" ", "").replace("　", "")
+        val today = Calendar.getInstance()
+        val currentYear = today.get(Calendar.YEAR)
+
+        for (pattern in DATE_PATTERNS) {
+            val matcher = pattern.matcher(cleanText)
+            if (matcher.find()) {
+                val prefix = matcher.group(1) ?: ""
+                val isExp = prefix.contains("消費")
+                val label = if (isExp) {
+                    context?.getString(R.string.food_label_expiry) ?: "消費期限"
+                } else {
+                    context?.getString(R.string.food_label_best_before) ?: "賞味期限"
+                }
+
+                val year: Int
+                val month: Int
+                val day: Int
+
+                if (pattern == DATE_PATTERNS[2]) {
+                    // 和暦（令和）
+                    val reiwaYear = matcher.group(2)?.toIntOrNull() ?: 8
+                    year = 2018 + reiwaYear
+                    month = matcher.group(3)?.toIntOrNull() ?: 1
+                    day = matcher.group(4)?.toIntOrNull() ?: 1
+                } else if (pattern == DATE_PATTERNS[4]) {
+                    // 年月のみ
+                    val rawYear = matcher.group(2)?.toIntOrNull() ?: currentYear
+                    year = if (rawYear < 100) 2000 + rawYear else rawYear
+                    month = matcher.group(3)?.toIntOrNull() ?: 1
+                    day = 1
+                } else if (matcher.groupCount() >= 4 && matcher.group(4) != null) {
+                    val rawYear = matcher.group(2)?.toIntOrNull() ?: currentYear
+                    year = if (rawYear < 100) 2000 + rawYear else rawYear
+                    month = matcher.group(3)?.toIntOrNull() ?: 1
+                    day = matcher.group(4)?.toIntOrNull() ?: 1
+                } else if (matcher.groupCount() >= 3 && matcher.group(3) != null) {
+                    // 月日のみの場合は今年
+                    year = currentYear
+                    month = matcher.group(2)?.toIntOrNull() ?: 1
+                    day = matcher.group(3)?.toIntOrNull() ?: 1
+                } else {
+                    continue
+                }
+
+                // 日付の妥当性チェック
+                if (month in 1..12 && day in 1..31) {
+                    val targetCal = Calendar.getInstance().apply {
+                        set(Calendar.YEAR, year)
+                        set(Calendar.MONTH, month - 1)
+                        set(Calendar.DAY_OF_MONTH, day)
+                        set(Calendar.HOUR_OF_DAY, 0)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.SECOND, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }
+
+                    val todayCal = Calendar.getInstance().apply {
+                        set(Calendar.HOUR_OF_DAY, 0)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.SECOND, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }
+
+                    val diffMillis = targetCal.timeInMillis - todayCal.timeInMillis
+                    val diffDays = (diffMillis / (1000 * 60 * 60 * 24)).toInt()
+
+                    val isJa = com.kapamilya.serena.translation.SerenaLocalizationBridge.isJapaneseDevice()
+                    val dateStr = if (isJa) {
+                        "${year}年${month}月${day}日"
+                    } else {
+                        String.format(Locale.US, "%04d-%02d-%02d", year, month, day)
+                    }
+                    val spoken = when {
+                        diffDays > 0 -> {
+                            context?.getString(R.string.food_expiry_days_left_fmt, label, dateStr, diffDays)
+                                ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select(
+                                    ja = "$label は $dateStr です。残り、あと${diffDays}日です。",
+                                    en = "$label is $dateStr ($diffDays days remaining).",
+                                    tl = "Ang $label ay $dateStr ($diffDays araw na natitira).",
+                                    es = "$label es $dateStr (quedan $diffDays días).",
+                                    nl = "$label is $dateStr (nog $diffDays dagen)."
+                                )
+                        }
+                        diffDays == 0 -> {
+                            context?.getString(R.string.food_expiry_today_fmt, label, dateStr)
+                                ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select(
+                                    ja = "$label は本日、${dateStr}です！お早めにお召し上がりください。",
+                                    en = "$label is today ($dateStr)! Please consume soon.",
+                                    tl = "Ngayon ang $label ($dateStr)! Mangyaring kainin agad.",
+                                    es = "¡$label es hoy ($dateStr)! Consúmalo pronto.",
+                                    nl = "$label is vandaag ($dateStr)!"
+                                )
+                        }
+                        else -> {
+                            context?.getString(R.string.food_expiry_overdue_fmt, label, dateStr, -diffDays)
+                                ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select(
+                                    ja = "注意！ $label の $dateStr を ${-diffDays}日 過ぎています！",
+                                    en = "Caution! $label ($dateStr) is overdue by ${-diffDays} days!",
+                                    tl = "Babala! Lumampas na ang $label ($dateStr) nang ${-diffDays} araw!",
+                                    es = "¡Atención! $label ($dateStr) venció hace ${-diffDays} días.",
+                                    nl = "Let op! $label ($dateStr) is ${-diffDays} dagen verlopen!"
+                                )
+                        }
+                    }
+
+                    return ExpirationResult(
+                        dateString = dateStr,
+                        labelType = label,
+                        remainingDays = diffDays,
+                        spokenMessage = spoken
+                    )
+                }
+            }
+        }
+        return null
+    }
+
+    /**
+     * OCRテキストから食品の種類・品名をオンデバイス高速推定
+     */
+    fun analyzeFoodItem(ocrText: String, context: Context? = null): FoodAnalysisResult? {
+        if (ocrText.isBlank()) return null
+        val expiration = extractExpirationDate(ocrText, context)
+
+        val defaultCategory = context?.getString(R.string.food_default_category) ?: "食品"
+        var matchedCategory = defaultCategory
+        var matchedItem = ""
+
+        for ((category, keywords) in FOOD_KEYWORDS) {
+            for (kw in keywords) {
+                if (ocrText.contains(kw, ignoreCase = true)) {
+                    matchedCategory = category
+                    matchedItem = kw
+                    break
+                }
+            }
+            if (matchedItem.isNotEmpty()) break
+        }
+
+        if (matchedItem.isEmpty() && expiration == null) {
+            return null
+        }
+
+        val itemName = if (matchedItem.isNotEmpty()) {
+            matchedItem
+        } else {
+            context?.getString(R.string.food_default_package) ?: "食品パッケージ"
+        }
+        return FoodAnalysisResult(
+            category = matchedCategory,
+            estimatedItemName = itemName,
+            expiration = expiration,
+            detectedTexts = ocrText.lines().map { it.trim() }.filter { it.isNotEmpty() }
+        )
+    }
+
+    /**
+     * レシートや請求書・郵便物のテキストから合計金額や期日を要約
+     */
+    fun summarizeDocument(ocrText: String, context: Context? = null): DocumentSummaryResult {
+        val cleanText = ocrText.replace(" ", "").replace("　", "")
+        
+        // 1. 金額の抽出（合計、請求額、お買上額、Total、Amount Due など多言語対応）
+        val amountPattern = Pattern.compile("(?i)(合計|小計|お買上|ご請求|請求金額|領収金額|total|subtotal|amount due|kabuuang halaga|importe)[\\s:：¥￥$€₱]*([0-9,.]{1,12})[円]?")
+        val amountMatcher = amountPattern.matcher(cleanText)
+        val isJa = com.kapamilya.serena.translation.SerenaLocalizationBridge.isJapaneseDevice()
+        val currencySuffix = if (isJa) "円" else ""
+        val totalAmount = if (amountMatcher.find()) {
+            val amt = amountMatcher.group(2)
+            if (amt != null) amt + currencySuffix else null
+        } else {
+            val generalYen = Pattern.compile("([¥￥$€₱]?[0-9,]{2,9})(?:円|USD|EUR|PHP)?").matcher(cleanText)
+            if (generalYen.find()) {
+                val amt = generalYen.group(1)
+                if (amt != null) (if (amt.startsWith("$") || amt.startsWith("€") || amt.startsWith("₱") || amt.startsWith("¥")) amt else amt + currencySuffix) else null
+            } else null
+        }
+
+        // 2. 期限・期日の抽出
+        val expiration = extractExpirationDate(ocrText, context)
+        val dueDate = expiration?.dateString
+
+        val lowerClean = cleanText.lowercase(Locale.ROOT)
+        val isReceipt = cleanText.contains("レシート") || cleanText.contains("領収書") || cleanText.contains("買上") || cleanText.contains("お釣り") ||
+                lowerClean.contains("receipt") || lowerClean.contains("resibo") || lowerClean.contains("recibo") || lowerClean.contains("kassabon")
+        val isBill = cleanText.contains("請求") || cleanText.contains("納付") || cleanText.contains("期日") || cleanText.contains("払込") ||
+                lowerClean.contains("invoice") || lowerClean.contains("bill") || lowerClean.contains("factura") || lowerClean.contains("factuur")
+
+        val docType = when {
+            isReceipt -> context?.getString(R.string.doc_type_receipt) ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select("レシート", "Receipt", "Resibo", "Recibo", "Kassabon")
+            isBill -> context?.getString(R.string.doc_type_bill) ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select("請求書または納付書", "Invoice or Bill", "Bill o Bayarin", "Factura", "Factuur")
+            else -> context?.getString(R.string.doc_type_general) ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select("書類または郵便物", "Document or Mail", "Dokumento o Sulat", "Documento o correo", "Document of post")
+        }
+
+        val detectedMsg = context?.getString(R.string.doc_detected_format, docType)
+            ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select("$docType を検出しました。", "Detected $docType.", "Na-detect ang $docType.", "Se detectó $docType.", "$docType gedetecteerd.")
+        val sb = StringBuilder(detectedMsg)
+        if (totalAmount != null) {
+            val amtMsg = context?.getString(R.string.doc_amount_format, totalAmount)
+                ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select("金額は $totalAmount です。", "Amount: $totalAmount.", "Halaga: $totalAmount.", "Importe: $totalAmount.", "Bedrag: $totalAmount.")
+            sb.append(" ").append(amtMsg)
+        }
+        if (dueDate != null) {
+            val dueMsg = context?.getString(R.string.doc_due_date_format, dueDate)
+                ?: com.kapamilya.serena.translation.SerenaLocalizationBridge.select("期限は $dueDate です。", "Due date: $dueDate.", "Petsa: $dueDate.", "Fecha: $dueDate.", "Datum: $dueDate.")
+            sb.append(" ").append(dueMsg)
+        }
+
+        return DocumentSummaryResult(
+            docType = docType,
+            totalAmount = totalAmount,
+            dueDate = dueDate,
+            summarySpokenText = sb.toString()
+        )
+    }
+}

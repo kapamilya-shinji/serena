@@ -1,0 +1,95 @@
+{
+  "model_name": "EmbeddingGemma 2 (Google DeepMind)",
+  "model_id": "embedding-gemma-2-740m-mrl-128d-embedded",
+  "license": "Apache-2.0",
+  "architecture": {
+    "text_backbone_params": "270M",
+    "vision_encoder_params": "170M",
+    "audio_encoder_params": "300M",
+    "total_params": "740M",
+    "full_embedding_dim": 768,
+    "active_matryoshka_dim": 128
+  },
+  "system_structure_prototypes": [
+    {
+      "concept_id": "SYS_PERMISSION_ALLOW",
+      "tokens": ["permission", "grant", "allow", "while_using", "one_time", "許可", "アプリの使用中のみ", "今回のみ", "payagan"],
+      "preferred_zone": "center",
+      "ja": "システム権限許可ボタン（アクセスを承認）",
+      "en": "System Permission Allow Button",
+      "tl": "Pindutan ng Payagan ang Pahintulot ng System",
+      "es": "Botón de permitir permiso del sistema",
+      "nl": "Systeemtoestemming toestaan-knop"
+    },
+    {
+      "concept_id": "SYS_PERMISSION_DENY",
+      "tokens": ["deny", "dont_allow", "reject", "許可しない", "拒否", "huwag_payagan"],
+      "preferred_zone": "center",
+      "ja": "システム権限拒否ボタン（アクセスを拒否）",
+      "en": "System Permission Deny Button",
+      "tl": "Pindutan ng Huwag Payagan ang Pahintulot",
+      "es": "Botón de denegar permiso del sistema",
+      "nl": "Systeemtoestemming weigeren-knop"
+    },
+    {
+      "concept_id": "SYS_RESTRICTED_SETTINGS_OVERFLOW",
+      "tokens": ["more_button", "overflow", "restricted", "allow_restricted", "制限付き設定", "その他のオプション", "詳細メニュー"],
+      "preferred_zone": "top_right",
+      "ja": "制限付き設定ロック解除メニュー（右上：ここを開いて『制限付き設定を許可』を選択）",
+      "en": "Restricted Settings Unlock Menu (Top-Right: Open to select 'Allow restricted settings')",
+      "tl": "Menu sa Pag-unlock ng Restricted Settings (Kanang-Itaas)",
+      "es": "Menú para desbloquear ajustes restringidos (arriba a la derecha)",
+      "nl": "Menu om beperkte instellingen te ontgrendelen (rechtsboven)"
+    },
+    {
+      "concept_id": "FINANCE_QR_PAY_EXEC",
+      "tokens": ["pay", "qr", "scan", "send_money", "transfer", "remit", "決済", "送金", "支払う", "bayad", "padala"],
+      "preferred_zone": "bottom_center",
+      "ja": "QR決済・送金実行メインボタン",
+      "en": "QR Payment / Send Money Primary Button",
+      "tl": "Pangunahing Pindutan ng QR Bayad o Padala",
+      "es": "Botón principal de pago QR o transferencia",
+      "nl": "Hoofdknop voor QR-betaling of geld overmaken"
+    },
+    {
+      "concept_id": "FINANCE_OTP_PIN_PAD",
+      "tokens": ["otp", "pin", "passcode", "verify", "auth", "biometric", "fingerprint", "暗証番号", "ワンタイム", "認証"],
+      "preferred_zone": "center",
+      "ja": "セキュリティ認証・ワンタイムパスワード・PIN入力キー",
+      "en": "Security Auth / OTP / PIN Input Control",
+      "tl": "Kontrol ng OTP, PIN, o Biometric Auth",
+      "es": "Control de autenticación OTP o PIN",
+      "nl": "Beveiligingsauthenticatie / OTP / pincode-invoer"
+    },
+    {
+      "concept_id": "GLOBAL_POWER_EMERGENCY",
+      "tokens": ["power_off", "restart", "reboot", "emergency", "lockdown", "電源を切る", "再起動", "緊急通報"],
+      "preferred_zone": "center",
+      "ja": "システム電源・再起動・緊急アクションボタン",
+      "en": "System Power / Restart / Emergency Action",
+      "tl": "Aksyon sa Power, Restart, o Emergency",
+      "es": "Acción de apagado, reinicio o emergencia",
+      "nl": "Systeem uitschakelen / herstarten / noodactie"
+    },
+    {
+      "concept_id": "NAV_BACK_DISMISS",
+      "tokens": ["back", "up", "navigate_up", "close", "dismiss", "cancel", "戻る", "閉じる", "キャンセル", "bumalik", "isara"],
+      "preferred_zone": "top_left",
+      "ja": "前の画面へ戻る・ダイアログを閉じるボタン",
+      "en": "Navigate Back / Close Dialog Button",
+      "tl": "Pindutan ng Bumalik o Isara",
+      "es": "Botón de volver atrás o cerrar",
+      "nl": "Knop Terug of dialoogvenster sluiten"
+    },
+    {
+      "concept_id": "ACTION_CONFIRM_SUBMIT",
+      "tokens": ["confirm", "submit", "ok", "done", "save", "apply", "next", "proceed", "確定", "送信", "完了", "次へ", "保存"],
+      "preferred_zone": "bottom_right",
+      "ja": "確定・送信・次へ進む実行ボタン",
+      "en": "Confirm / Submit / Proceed Action Button",
+      "tl": "Pindutan ng Kumpirmahin, Ipadala, o Susunod",
+      "es": "Botón de confirmar, enviar o continuar",
+      "nl": "Knop Bevestigen, Verzenden of Doorgaan"
+    }
+  ]
+}

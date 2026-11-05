@@ -1,0 +1,346 @@
+package com.kapamilya.serena.location
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import androidx.core.content.ContextCompat
+import com.kapamilya.serena.R
+import com.kapamilya.serena.getSafeSharedPreferences
+import java.util.Locale
+
+/**
+ * LocationAddressHelper
+ * シェイク・ステータスアナウンス連動の現在地住所読み上げエンジン
+ * プライバシー保護粒度（市区町村・町名まで / 番地まで詳細）＆ インターナショナル対応
+ */
+class LocationAddressHelper(private val context: Context) {
+
+    companion object {
+        private const val TAG = "LocationAddressHelper"
+        const val PREF_KEY_LOCATION_PRECISION = "pref_location_precision_level"
+        
+        // 粒度設定
+        const val PRECISION_TOWN = "town"              // 市区町村・町名まで (デフォルト: プライバシー保護)
+        const val PRECISION_EXACT_BLOCK = "exact_block" // 番地・号まで詳細
+
+        // 国名読み上げ設定
+        const val PREF_KEY_ALWAYS_INCLUDE_COUNTRY = "pref_always_include_country"
+    }
+
+    private val prefs: SharedPreferences = context.getSafeSharedPreferences("serena_prefs", Context.MODE_PRIVATE)
+    private val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    fun isLocationPermissionGranted(): Boolean {
+        val fine = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        val coarse = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        return fine || coarse
+    }
+
+    fun isExactBlockPrecision(): Boolean {
+        return prefs.getString(PREF_KEY_LOCATION_PRECISION, PRECISION_TOWN) == PRECISION_EXACT_BLOCK
+    }
+
+    fun togglePrecision(): Boolean {
+        val current = isExactBlockPrecision()
+        val next = !current
+        prefs.edit().putString(PREF_KEY_LOCATION_PRECISION, if (next) PRECISION_EXACT_BLOCK else PRECISION_TOWN).apply()
+        return next
+    }
+
+    fun getPrecisionDisplayName(): String {
+        return if (isExactBlockPrecision()) {
+            context.getString(com.kapamilya.serena.R.string.precision_exact_block)
+        } else {
+            context.getString(com.kapamilya.serena.R.string.precision_town)
+        }
+    }
+
+    fun isAlwaysIncludeCountry(): Boolean {
+        return prefs.getBoolean(PREF_KEY_ALWAYS_INCLUDE_COUNTRY, false)
+    }
+
+    fun toggleAlwaysIncludeCountry(): Boolean {
+        val current = isAlwaysIncludeCountry()
+        val next = !current
+        prefs.edit().putBoolean(PREF_KEY_ALWAYS_INCLUDE_COUNTRY, next).apply()
+        return next
+    }
+
+    fun getCountrySettingDisplayName(): String {
+        return if (isAlwaysIncludeCountry()) {
+            context.getString(com.kapamilya.serena.R.string.country_setting_always)
+        } else {
+            context.getString(com.kapamilya.serena.R.string.country_setting_smart)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getCurrentLocationAddress(callback: (String) -> Unit) {
+        if (!isLocationPermissionGranted()) {
+            callback(context.getString(R.string.loc_permission_required))
+            return
+        }
+
+        val lm = locationManager
+        if (lm == null) {
+            callback("")
+            return
+        }
+
+        // 1. キャッシュされた最新位置の探索 (GPS -> Network -> Passive)
+        val providers = listOf(
+            LocationManager.GPS_PROVIDER,
+            LocationManager.NETWORK_PROVIDER,
+            LocationManager.PASSIVE_PROVIDER
+        )
+
+        var bestLocation: Location? = null
+        for (provider in providers) {
+            try {
+                if (lm.isProviderEnabled(provider)) {
+                    val loc = lm.getLastKnownLocation(provider) ?: continue
+                    if (bestLocation == null || loc.time > bestLocation.time) {
+                        bestLocation = loc
+                    }
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Failed to get last known location from $provider: ${e.message}")
+            }
+        }
+
+        if (bestLocation != null && (System.currentTimeMillis() - bestLocation.time) < 1000 * 60 * 15) {
+            // 15分以内の有効なキャッシュ位置を即時逆ジオコーディング
+            resolveAddress(bestLocation, callback)
+            return
+        }
+
+        // 2. シングルショットで現在位置をリクエスト
+        try {
+            var listenerReceived = false
+            val singleShotListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    if (listenerReceived) return
+                    listenerReceived = true
+                    try { lm.removeUpdates(this) } catch (_: Exception) {}
+                    resolveAddress(location, callback)
+                }
+                @Deprecated("Deprecated in Java")
+                override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+                override fun onProviderEnabled(provider: String) {}
+                override fun onProviderDisabled(provider: String) {}
+            }
+
+            val availableProvider = when {
+                lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) -> LocationManager.NETWORK_PROVIDER
+                lm.isProviderEnabled(LocationManager.GPS_PROVIDER) -> LocationManager.GPS_PROVIDER
+                else -> null
+            }
+
+            if (availableProvider != null) {
+                lm.requestSingleUpdate(availableProvider, singleShotListener, Looper.getMainLooper())
+                // 3秒タイムアウトでフォールバック
+                mainHandler.postDelayed({
+                    if (!listenerReceived) {
+                        listenerReceived = true
+                        try { lm.removeUpdates(singleShotListener) } catch (_: Exception) {}
+                        if (bestLocation != null) {
+                            resolveAddress(bestLocation, callback)
+                        } else {
+                            callback(context.getString(R.string.loc_positioning))
+                        }
+                    }
+                }, 3000)
+            } else if (bestLocation != null) {
+                resolveAddress(bestLocation, callback)
+            } else {
+                callback(context.getString(R.string.loc_gps_off))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "requestSingleUpdate failed: ${e.message}")
+            if (bestLocation != null) {
+                resolveAddress(bestLocation, callback)
+            } else {
+                callback("")
+            }
+        }
+    }
+
+    private fun resolveAddress(location: Location, callback: (String) -> Unit) {
+        val lat = location.latitude
+        val lng = location.longitude
+        val locale = Locale.getDefault()
+
+        Thread {
+            try {
+                val geocoder = Geocoder(context, locale)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    geocoder.getFromLocation(lat, lng, 1) { addresses ->
+                        val addr = addresses.firstOrNull()
+                        val text = formatAddressText(addr, locale)
+                        mainHandler.post { callback(text) }
+                    }
+                } else {
+                    @Suppress("DEPRECATION")
+                    val addresses = geocoder.getFromLocation(lat, lng, 1)
+                    val addr = addresses?.firstOrNull()
+                    val text = formatAddressText(addr, locale)
+                    mainHandler.post { callback(text) }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Geocoder error: ${e.message}")
+                mainHandler.post {
+                    callback(context.getString(R.string.loc_coords_fmt, String.format(Locale.US, "%.3f", lat), String.format(Locale.US, "%.3f", lng)))
+                }
+            }
+        }.start()
+    }
+
+    private fun formatAddressText(address: Address?, locale: Locale): String {
+        if (address == null) return context.getString(R.string.loc_address_unknown)
+
+        val isJapanese = locale.language == Locale.JAPANESE.language || locale.country == "JP"
+        val exact = isExactBlockPrecision()
+
+        val isCountryIncluded = isAlwaysIncludeCountry()
+        val countryName = address.countryName ?: ""
+        val isOverseas = address.countryCode != null && address.countryCode != "JP"
+
+        return if (isJapanese) {
+            val admin = address.adminArea ?: "" // 都道府県 (岐阜県)
+            val locality = address.locality ?: address.subAdminArea ?: "" // 市区町村 (大垣市)
+            val subLocality = address.subLocality ?: "" // 町名・丁目 (郭町1丁目)
+            val thoroughfare = address.thoroughfare ?: ""
+            val subThoroughfare = address.subThoroughfare ?: "" // 番地・号
+            val featureName = address.featureName ?: ""
+
+            // 国名プレフィックス（常時国名オンまたは海外の場合）
+            val countryPrefix = if (isCountryIncluded && countryName.isNotEmpty()) {
+                "${countryName}、"
+            } else if (isOverseas && countryName.isNotEmpty()) {
+                "${countryName}、"
+            } else {
+                ""
+            }
+
+            // 1. addressLine (最も完全な住所文字列) からの精密解析
+            val fullLine = address.getAddressLine(0) ?: ""
+            val cleanedLine = fullLine
+                .replace(Regex("^日本[、,\\s]*"), "")
+                .replace(Regex("^[〒\\d\\-\\s]+"), "")
+                .trim()
+
+            if (exact) {
+                // 番地・号まで詳細
+                if (cleanedLine.isNotEmpty()) {
+                    context.getString(R.string.loc_current_fmt, "${countryPrefix}$cleanedLine")
+                } else {
+                    val townPart = when {
+                        subLocality.isNotEmpty() -> subLocality
+                        thoroughfare.isNotEmpty() -> thoroughfare
+                        else -> ""
+                    }
+                    val blockPart = when {
+                        subThoroughfare.isNotEmpty() -> "${townPart} ${subThoroughfare}"
+                        featureName.isNotEmpty() && featureName != townPart && featureName != admin && featureName != locality -> "${townPart} ${featureName}"
+                        else -> townPart
+                    }
+                    val full = "${admin}${locality}${blockPart}".trim()
+                    if (full.isNotEmpty()) context.getString(R.string.loc_current_fmt, "${countryPrefix}$full") else context.getString(R.string.loc_address_acquiring)
+                }
+            } else {
+                // 市区町村・町名まで (プライバシー保護: 番地数字のみをカットして何町・何丁目で止める)
+                if (cleanedLine.isNotEmpty()) {
+                    var stripped = cleanedLine
+                    // 1. 「〇〇丁目」の後の番地数字（1-2-3や12番地など）をカット
+                    if (stripped.contains(Regex("[\\d\\uFF10-\\uFF19]+丁目"))) {
+                        stripped = stripped.replace(Regex("(?<=[\\d\\uFF10-\\uFF19]+丁目)[\\s\\d\\uFF10-\\uFF19\\-ー番地号]+.*$"), "").trim()
+                    } else if (stripped.contains(Regex("(?<=[^\\d\\s])(町|村|大字|字|通|条|番街)"))) {
+                        // 2. 「〇〇町」などの直後の番地数字（1-2-3や123番地など）をカット
+                        stripped = stripped.replace(Regex("(?<=(?:町|村|大字|字|通|条|番街))[\\s\\d\\uFF10-\\uFF19\\-ー番地号]+.*$"), "").trim()
+                    } else {
+                        // 3. 末尾の番地数字をカット
+                        stripped = stripped.replace(Regex("[\\s\\d\\uFF10-\\uFF19\\-ー番地号]+$"), "").trim()
+                    }
+                    context.getString(R.string.loc_current_fmt, "${countryPrefix}$stripped")
+                } else {
+                    val townPart = when {
+                        subLocality.isNotEmpty() -> subLocality
+                        thoroughfare.isNotEmpty() -> thoroughfare
+                        featureName.isNotEmpty() && featureName != admin && featureName != locality -> featureName
+                        else -> ""
+                    }
+                    val full = "${admin}${locality}${townPart}".trim()
+                    if (full.isNotEmpty()) context.getString(R.string.loc_current_fmt, "${countryPrefix}$full") else context.getString(R.string.loc_address_acquiring)
+                }
+            }
+        } else {
+            // インターナショナル対応 (英語圏 / 海外)
+            val city = address.locality ?: address.subAdminArea ?: ""
+            val state = address.adminArea ?: ""
+            val street = address.thoroughfare ?: ""
+            val streetNumber = address.subThoroughfare ?: ""
+
+            val countryPart = if (isCountryIncluded || isOverseas) countryName else ""
+
+            if (exact) {
+                val streetFull = listOfNotNull(streetNumber.ifEmpty { null }, street.ifEmpty { null }).joinToString(" ")
+                val parts = listOfNotNull(streetFull.ifEmpty { null }, city.ifEmpty { null }, state.ifEmpty { null }, countryPart.ifEmpty { null })
+                val full = parts.joinToString(", ")
+                if (full.isNotEmpty()) context.getString(R.string.loc_current_fmt, full) else context.getString(R.string.loc_address_unknown)
+            } else {
+                val parts = listOfNotNull(city.ifEmpty { null }, state.ifEmpty { null }, countryPart.ifEmpty { null })
+                val full = parts.joinToString(", ")
+                if (full.isNotEmpty()) context.getString(R.string.loc_current_fmt, full) else context.getString(R.string.loc_address_unknown)
+            }
+        }
+    }
+
+    /**
+     * 現在地からストリート名（通り名）と地区・近隣界隈名を高精度抽出
+     */
+    fun resolveStreetAndNeighborhood(location: Location, callback: (streetName: String, neighborhood: String) -> Unit) {
+        val lat = location.latitude
+        val lng = location.longitude
+        val locale = Locale.getDefault()
+
+        Thread {
+            try {
+                val geocoder = Geocoder(context, locale)
+                val addresses = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    var result: List<Address>? = null
+                    val latch = java.util.concurrent.CountDownLatch(1)
+                    geocoder.getFromLocation(lat, lng, 1) { addrs ->
+                        result = addrs
+                        latch.countDown()
+                    }
+                    latch.await(3, java.util.concurrent.TimeUnit.SECONDS)
+                    result
+                } else {
+                    @Suppress("DEPRECATION")
+                    geocoder.getFromLocation(lat, lng, 1)
+                }
+
+                val addr = addresses?.firstOrNull()
+                val street = addr?.thoroughfare ?: addr?.featureName ?: ""
+                val neighborhood = addr?.subLocality ?: addr?.locality ?: ""
+                mainHandler.post { callback(street, neighborhood) }
+            } catch (e: Exception) {
+                Log.e(TAG, "resolveStreet error: ${e.message}")
+                mainHandler.post { callback("", "") }
+            }
+        }.start()
+    }
+}

@@ -1,0 +1,3 @@
+-keep class com.shinji.serena.phone.** { *; }
+-dontwarn com.google.ai.edge.**
+-dontwarn com.google.mlkit.**

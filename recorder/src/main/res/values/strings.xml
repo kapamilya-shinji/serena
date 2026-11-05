@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Kapamilya Serena Recorder</string>
+    <string name="studio_ready">Ready: Gemma 4 + EmbeddingGemma 2 Dual-Core &amp; 48kHz Lossless Studio</string>
+</resources>
